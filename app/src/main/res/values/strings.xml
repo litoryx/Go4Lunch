@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name_fr">Je suis affamé</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="map_fr">Carte</string>
+    <string name="rest_fr">Restaurants</string>
+    <string name="collegue_fr">Collègues</string>
+</resources>
