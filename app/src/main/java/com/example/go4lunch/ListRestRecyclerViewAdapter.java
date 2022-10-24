@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRecyclerViewAdapter.ViewHolder> {
 
-    List<Restaurant> mList;
+    List<Place> mList;
 
-    public ListRestRecyclerViewAdapter(List<Restaurant> mListRest){
+    public ListRestRecyclerViewAdapter(List<Place> mListRest){
         mList = mListRest;
     }
 
@@ -29,8 +29,8 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
 
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
-            Restaurant donne = mList.get(position);
-            holder.mNameRest.setText(donne.getName());
+            Place place = mList.get(position);
+            holder.mNameRest.setText(place.getName());
     }
 
     @Override

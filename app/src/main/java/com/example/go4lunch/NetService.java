@@ -8,17 +8,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface NetService {
-    @GET("?keyword=cruise" +
-            "  &location={restGived}" +
-            "  &radius=1500" +
-            "  &type=restaurant" +
-            "  &key=AIzaSyD1gUR0fmB0GVyO0UKPLV1snMAY9KqUTjw")
-    Call<List<Restaurant>> getFollowing(@Path("restGived") String restGived);
+    @GET("api/place/nearbysearch/json")
+    Call<PlacesNearbySearchResponse> getFollowing(@Query("location") String location,
+                                                  @Query("radius") int radius,
+                                                  @Query("type") String type,
+                                                  @Query("key") String key);
 
-    public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/json")
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("https://maps.googleapis.com/maps/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }

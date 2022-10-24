@@ -5,28 +5,30 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ListRestFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListRestFragment extends Fragment implements NetCall.Callbacks{
+public class ListRestFragment extends Fragment {
 
     RecyclerView mRecyclerView;
-
+    NetRepository mNetRepository = new NetRepository();
     ListRestRecyclerViewAdapter mListRestRecyclerViewAdapter;
 
     public ListRestFragment() {
@@ -56,47 +58,20 @@ public class ListRestFragment extends Fragment implements NetCall.Callbacks{
 
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        this.executeHttpRequestWithRetrofit();
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         // Inflate the layout for this fragment
+
+        mNetRepository.fetchRestFollowing("48.864033,2.368425").observe(getViewLifecycleOwner(), places -> {
+            if(places != null){
+                initList(places);
+                Log.d("ListRestFragment","Intégration list" + places);
+            }
+
+        });
 
         return view;
     }
 
-    private void executeHttpRequestWithRetrofit(){
-        this.updateUIWhenStartingHTTPRequest();
-        NetCall.fetchRestFollowing( this, "-33.8670522%2C151.1957362");
-    }
-
-    // 2 - Override callback methods
-
-
-    @Override
-    public void onResponse(@Nullable List<Restaurant> restGived) {
-        // 2.1 - When getting response, we update UI
-        if (restGived != null) this.updateUIWithListOfRestaurants(restGived);
-    }
-
-    @Override
-    public void onFailure() {
-        // 2.2 - When getting error, we update UI
-        this.updateUIWhenStopingHTTPRequest("An error happened !");
-    }
-
-    // 3 - Update UI showing only name of users
-    private void updateUIWithListOfRestaurants(List<Restaurant> restGived){
-        initList(restGived);
-        updateUIWhenStopingHTTPRequest("Arrêt");
-    }
-
-    private void updateUIWhenStartingHTTPRequest(){
-        Toast.makeText(getContext(),"Downloading...", Toast.LENGTH_LONG).show();
-    }
-
-    private void updateUIWhenStopingHTTPRequest(String response){
-        Toast.makeText(getContext(),response, Toast.LENGTH_LONG).show();
-    }
-
-    public void initList(List<Restaurant> list){
+    public void initList(List<Place> list){
         mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list)); }
 }
