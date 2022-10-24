@@ -1,13 +1,9 @@
-package com.example.go4lunch;
+package com.example.go4lunch.Net;
 
-import java.lang.reflect.Array;
-import java.util.List;
+import com.example.go4lunch.objetGoogle.PlacesNearbySearchResponse;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface NetService {
@@ -16,9 +12,4 @@ public interface NetService {
                                                   @Query("radius") int radius,
                                                   @Query("type") String type,
                                                   @Query("key") String key);
-
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
 }

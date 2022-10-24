@@ -1,10 +1,12 @@
-package com.example.go4lunch;
+package com.example.go4lunch.ListRest;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.go4lunch.R;
+import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
 
@@ -30,7 +32,12 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
             Place place = mList.get(position);
+            String time = place.getOpening_hours().getPeriods().get(position).getPlaceOpeningHoursPeriodDetail().getTime();
+            String adr_address = place.getAdr_address();
+
             holder.mNameRest.setText(place.getName());
+            holder.mOpen_horary.setText(time);
+            holder.mAdrRest.setText(adr_address);
     }
 
     @Override

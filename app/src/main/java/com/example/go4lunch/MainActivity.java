@@ -1,10 +1,12 @@
 package com.example.go4lunch;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
+import com.example.go4lunch.ListRest.ListRestFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -53,18 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
     void setup() {
         mBottomNavigationView.setOnNavigationItemReselectedListener(null);
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.geo) {
-                    showFragment(GeoFragment.newInstance());
-                } else if (menuItem.getItemId() == R.id.List) {
-                    showFragment(ListRestFragment.newInstance());
-                } else if (menuItem.getItemId() == R.id.ListCollegue) {
-                    showFragment(ListStaffFragment.newInstance());
-                }
-                return true;
+        mBottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            if (menuItem.getItemId() == R.id.geo) {
+                showFragment(GeoFragment.newInstance());
+            } else if (menuItem.getItemId() == R.id.List) {
+                showFragment(ListRestFragment.newInstance());
+            } else if (menuItem.getItemId() == R.id.ListCollegue) {
+                showFragment(ListStaffFragment.newInstance());
             }
+            return true;
         });
     }
 

@@ -1,12 +1,10 @@
-package com.example.go4lunch;
+package com.example.go4lunch.ListRest;
 
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.example.go4lunch.Net.NetRepository;
+import com.example.go4lunch.R;
+import com.example.go4lunch.ViewModelFactory;
+import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +29,7 @@ import java.util.Objects;
 public class ListRestFragment extends Fragment {
 
     RecyclerView mRecyclerView;
-    NetRepository mNetRepository = new NetRepository();
-    ListRestRecyclerViewAdapter mListRestRecyclerViewAdapter;
+    ListRestViewModel mListRestViewModel;
 
     public ListRestFragment() {
         // Required empty public constructor
@@ -56,22 +56,24 @@ public class ListRestFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_rest, container, false);
         Context context = view.getContext();
 
+        mListRestViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(ListRestViewModel.class);
+
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         // Inflate the layout for this fragment
 
-        mNetRepository.fetchRestFollowing("48.864033,2.368425").observe(getViewLifecycleOwner(), places -> {
+        mListRestViewModel.getList().observe(getViewLifecycleOwner(), places -> {
             if(places != null){
                 initList(places);
                 Log.d("ListRestFragment","Intégration list" + places);
             }
-
         });
 
         return view;
     }
 
     public void initList(List<Place> list){
-        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list)); }
+        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list));
+    }
 }
