@@ -14,9 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.R;
-import com.example.go4lunch.ViewModelFactory;
 import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
@@ -35,14 +33,7 @@ public class ListRestFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
 
-     * @return A new instance of fragment ListRestFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ListRestFragment newInstance() {
         ListRestFragment fragment = new ListRestFragment();
         Bundle args = new Bundle();

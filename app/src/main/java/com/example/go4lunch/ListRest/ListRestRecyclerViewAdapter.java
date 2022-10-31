@@ -1,17 +1,23 @@
 package com.example.go4lunch.ListRest;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.ViewRest.ViewRestActivity;
 import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRecyclerViewAdapter.ViewHolder> {
 
@@ -29,6 +35,7 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
             Place place = mList.get(position);
@@ -36,8 +43,14 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
             String adr_address = place.getAdr_address();
 
             holder.mNameRest.setText(place.getName());
-            holder.mOpen_horary.setText(time);
+            if(time != null) { holder.mOpen_horary.setText(time); }else{holder.mOpen_horary.setText("Pas d'horaire");}
             holder.mAdrRest.setText(adr_address);
+
+            holder.mRest.setOnClickListener(view -> {
+                Intent activityIntent = new Intent(view.getContext(), ViewRestActivity.class);
+                activityIntent.putExtra("mPlace", place);
+                startActivity(view.getContext(), activityIntent, null);
+            });
     }
 
     @Override
@@ -45,12 +58,13 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mNameRest;
         public TextView mAdrRest;
         public TextView mOpen_horary;
         public TextView mDistance;
         public TextView mWorkmates;
+        public ConstraintLayout mRest;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,7 +73,7 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
             mOpen_horary = view.findViewById(R.id.horary);
             mDistance = view.findViewById(R.id.distance);
             mWorkmates = view.findViewById(R.id.workmates);
-
+            mRest = view.findViewById(R.id.rest);
         }
     }
 }

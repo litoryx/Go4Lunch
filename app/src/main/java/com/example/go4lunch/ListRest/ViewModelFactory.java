@@ -1,8 +1,6 @@
-package com.example.go4lunch;
+package com.example.go4lunch.ListRest;
 
-import com.example.go4lunch.ListRest.ListRestViewModel;
 import com.example.go4lunch.Net.NetRepository;
-import com.example.go4lunch.Net.NetService;
 import com.example.go4lunch.Net.NetServiceRetrofit;
 
 import androidx.annotation.NonNull;

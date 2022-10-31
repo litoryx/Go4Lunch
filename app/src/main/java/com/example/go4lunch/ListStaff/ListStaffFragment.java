@@ -1,12 +1,24 @@
-package com.example.go4lunch;
+package com.example.go4lunch.ListStaff;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.go4lunch.R;
+import com.example.go4lunch.ViewRest.ViewRestViewModel;
+import com.example.go4lunch.objetGoogle.Place;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +26,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ListStaffFragment extends Fragment {
+    RecyclerView mRecyclerView;
+    ViewRestViewModel mStaffViewModel;
 
     public ListStaffFragment() {
         // Required empty public constructor
@@ -38,6 +52,20 @@ public class ListStaffFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_staff, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_staff, container, false);
+        Context context = view.getContext();
+
+        mStaffViewModel = new ViewModelProvider(this, StaffViewModelFactory.getInstance()).get(ViewRestViewModel.class);
+
+        mRecyclerView = (RecyclerView) view;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+
+        return view;
+    }
+
+    public void initList(List<Place> places){
+
+
     }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Je suis affamé</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="map">Carte</string>
+    <string name="rest">Restaurants</string>
+    <string name="collegue">Collègues</string>
+
+    <string name="call">Appel</string>
+    <string name="like">Aimer</string>
+    <string name="website">Site web</string>
+
+    <string name="navigation_drawer_open">Ouverture</string>
+    <string name="navigation_drawer_close">Fermeture</string>
+
+    <string name="ylunch">Ton Déj</string>
+    <string name="settings">Paramètre</string>
+    <string name="logout">Déconnexion</string>
+
+    <string name="icone_appel">icone_appel</string>
+    <string name="icone_aime">icone_aime</string>
+    <string name="icone_world">icone_monde</string>
+
+    <string name="go4lunch">Go4Lunch</string>
+    <string name="image_user">Image User</string>
+    <string name="jsmith_gmail_com">jsmith@gmail.com</string>
+    <string name="john_smith">John Smith</string>
+    <string name="background_img">background_img</string>
+    <string name="d_gage">Dégage</string>
+    <string name="francais_12_rue_de_la_rochefoucauld">Francais - 12 rue de la Rochefoucauld</string>
+    <string name="ouvert_jusqu_7h">ouvert jusqu\'à 7h</string>
+    <string name="_120_m">120 m</string>
+    <string name="nombre_user">Nombre user</string>
+    <string name="_2">(2)</string>
+    <string name="nombre_toile_restaurant">Nombre étoile restaurant</string>
+    <string name="pho_restau">pho_restau</string>
+    <string name="photo_restaurant">photo_restaurant</string>
+    <string name="bouton_de_pr_sence">bouton de présence</string>
+    <string name="le_nzc">Le NZC</string>
+    <string name="toile_resto">étoile_resto</string>
+</resources>

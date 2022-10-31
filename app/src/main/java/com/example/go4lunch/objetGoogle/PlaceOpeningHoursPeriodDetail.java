@@ -16,7 +16,7 @@ public class PlaceOpeningHoursPeriodDetail {
     }
 
     public String getTime() {
-        return time;
+        if(time != null){return time;}else{return null;}
     }
 
     public boolean isTruncated() {

@@ -2,6 +2,8 @@ package com.example.go4lunch.objetGoogle;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
+
 public class PlaceOpeningHours {
 
     boolean open_now;
@@ -11,7 +13,8 @@ public class PlaceOpeningHours {
         return open_now;
     }
 
+    @Nullable
     public List<PlaceOpeningHoursPeriod> getPeriods() {
-        return periods;
+        if(periods != null){return periods;}else{return null;}
     }
 }

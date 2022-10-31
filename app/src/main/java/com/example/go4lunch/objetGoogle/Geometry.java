@@ -4,9 +4,9 @@ import com.example.go4lunch.objetGoogle.LatLngLiteral;
 
 public class Geometry {
 
-    LatLngLiteral mLatLngLiteral;
+    LatLngLiteral location;
 
     public LatLngLiteral getLatLngLiteral() {
-        return mLatLngLiteral;
+        return location;
     }
 }

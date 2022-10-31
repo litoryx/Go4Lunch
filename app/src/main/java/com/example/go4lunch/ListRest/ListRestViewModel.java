@@ -11,17 +11,13 @@ import androidx.lifecycle.ViewModel;
 
 public class ListRestViewModel extends ViewModel {
     NetRepository mNetRepository;
-    MutableLiveData<List<Place>> modifList = new MutableLiveData<>();
     LiveData<List<Place>> mListCurrent;
 
     public ListRestViewModel(NetRepository netRepository) {
         mNetRepository = netRepository;
-
-        List<Place> restList = mNetRepository.fetchRestFollowing("48.864033,2.368425").getValue();
-
-        modifList.setValue(restList);
-        mListCurrent = modifList;
+        mListCurrent = mNetRepository.fetchRestFollowing("48.864033,2.368425");
     }
 
     public LiveData<List<Place>> getList(){return mListCurrent;}
+
 }

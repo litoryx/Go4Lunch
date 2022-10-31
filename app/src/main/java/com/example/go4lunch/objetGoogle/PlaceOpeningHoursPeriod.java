@@ -5,6 +5,6 @@ public class PlaceOpeningHoursPeriod {
     PlaceOpeningHoursPeriodDetail open;
 
     public PlaceOpeningHoursPeriodDetail getPlaceOpeningHoursPeriodDetail() {
-        return open;
+        if(open != null){return open;}else{return null;}
     }
 }

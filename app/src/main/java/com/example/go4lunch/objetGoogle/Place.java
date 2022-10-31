@@ -1,13 +1,37 @@
 package com.example.go4lunch.objetGoogle;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
-public class Place {
+public class Place implements Parcelable {
 
     String name;
     Geometry geometry;
     PlaceOpeningHours opening_hours;
     String adr_address;
+    String place_id;
+
+    protected Place(Parcel in) {
+        name = in.readString();
+        adr_address = in.readString();
+        place_id = in.readString();
+    }
+
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
+
+    public String getPlace_id() { return place_id; }
 
     public Geometry getGeometry() {
         return geometry;
@@ -31,5 +55,17 @@ public class Place {
         return "Place{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(adr_address);
+        parcel.writeString(place_id);
     }
 }

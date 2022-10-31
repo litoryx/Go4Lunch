@@ -11,23 +11,22 @@
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:contentDescription="@string/photo_restaurant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ImageView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:src="@drawable/ic_baseline_check_circle_24"
+        android:contentDescription="@string/bouton_de_pr_sence"
         android:id="@+id/favoris"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:backgroundTint="@color/white"
-        android:tint="#FFE436"
+        app:tint="@color/green"
         app:layout_constraintBottom_toBottomOf="@+id/img"
         app:layout_constraintEnd_toEndOf="parent" />
-
-
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -43,41 +42,31 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="35dp"
-            android:background="#FFFFFF"
+            android:layout_height="100dp"
+            android:background="@color/orange"
             android:columnCount="2"
-            android:rowCount="3">
+            android:rowCount="2">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_marginRight="0dp"
                 android:padding="5dp"
-                android:textColor="#000000"
+                android:textColor="@color/white"
                 android:fontFamily="sans-serif-black"
-                android:text="" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="25dp"
-                android:fontFamily="sans-serif-black"
-                android:layout_margin="10dp" />
+                android:text="@string/le_nzc" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:padding="5dp"
+                android:contentDescription="@string/toile_resto"
+                android:layout_margin="12dp"
+                android:layout_marginLeft="0dp"
+                android:src="@drawable/ic_baseline_star_24"
                 android:textColor="#000000"
                 android:fontFamily="sans-serif-black"
-                 />
+                />
 
             <TextView
                 android:id="@+id/adresse"
@@ -85,56 +74,89 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:fontFamily="sans-serif-black"
-                android:layout_margin="10dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="5dp"
-                android:textColor="#000000"
-                android:fontFamily="sans-serif-black"
-                />
+               />
 
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:fontFamily="sans-serif-black"
-                android:layout_margin="10dp" />
         </GridLayout>
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginBottom="35dp"
-            android:layout_marginRight="35dp"
+            android:layout_height="100dp"
             android:background="#FFFFFF"
-            android:columnCount="1"
-            android:rowCount="1">
+            android:columnCount="3"
+            android:rowCount="2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/icone_appel"
+                android:layout_margin="13dp"
+                android:layout_marginLeft="75dp"
+                android:src="@drawable/ic_baseline_call_24"
+                android:fontFamily="sans-serif-black"
+                app:tint="@color/orange" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/icone_aime"
+                android:layout_margin="13dp"
+                android:layout_marginLeft="75dp"
+                android:src="@drawable/ic_baseline_star_24"
+                android:fontFamily="sans-serif-black"
+                app:tint="@color/orange" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/icone_world"
+                android:layout_margin="13dp"
+                android:layout_marginLeft="75dp"
+                android:src="@drawable/ic_outline_public_24"
+                app:tint="@color/orange"
+                android:fontFamily="sans-serif-black"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:layout_marginLeft="72.5dp"
                 android:padding="5dp"
-                android:textColor="#000000"
+                android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
-                android:text="A propos" />
+                android:text="@string/call" />
 
             <TextView
-                android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_margin="10dp"
+                android:layout_marginLeft="70dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
-                android:textColor="#000000" />
+                android:text="@string/like" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="57.5dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-black"
+                android:text="@string/website" />
 
         </GridLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_rest"
+            android:name="com.example.go4lunch.ListRestFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".ListRest.ListRestFragment"
+            tools:listitem="@layout/fragment_list" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
