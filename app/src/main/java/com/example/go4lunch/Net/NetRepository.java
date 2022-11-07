@@ -3,7 +3,6 @@ package com.example.go4lunch.Net;
 import android.util.Log;
 
 import com.example.go4lunch.BuildConfig;
-import com.example.go4lunch.objetGoogle.CatFactsResponse;
 import com.example.go4lunch.objetGoogle.Place;
 import com.example.go4lunch.objetGoogle.PlaceDetailsResponse;
 import com.example.go4lunch.objetGoogle.PlacesNearbySearchResponse;
@@ -23,7 +22,6 @@ public class NetRepository {
 
     NetService netService;
 
-    private final Map<Integer, CatFactsResponse> alreadyFetchedResponses = new HashMap<>();
 
     public NetRepository(NetService netService) {
         this.netService = netService;
@@ -59,12 +57,12 @@ public class NetRepository {
     }
 
 
-    public LiveData<Place> fetchStaffFollowing(String fields, String place_id){
+    public LiveData<Place> fetchStaffFollowing( String place_id){
         MutableLiveData<Place> nearby = new MutableLiveData<>();
 
         netService = NetServiceRetrofit.getnetStaffService();
 
-        Call<PlaceDetailsResponse> call = netService.getStaffFollowing(fields, place_id, BuildConfig.MAPS_API_KEY);
+        Call<PlaceDetailsResponse> call = netService.getStaffFollowing( place_id, BuildConfig.MAPS_API_KEY);
 
         call.enqueue(new Callback<PlaceDetailsResponse>() {
 
@@ -82,41 +80,5 @@ public class NetRepository {
             }
         });
         return nearby;
-    }
-
-
-    public LiveData<List<Place>> getMapLiveData(int page) {
-        MutableLiveData<List<Place>> catFactsMutableLiveData = new MutableLiveData<>();
-
-        // Check in our cache if we already queried and stored the response
-
-        CatFactsResponse response = alreadyFetchedResponses.get(page);
-
-        if (response != null) {
-            // We already have the response (because we already queried this page in the past) ! No need to call the api !
-            catFactsMutableLiveData.setValue(response.getCatFacts());
-        } else {
-            // First time this page is queried, let's call the server ('enqueue()' makes the request on another thread)...
-            netService.getListOfCats(page).enqueue(new Callback<CatFactsResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<CatFactsResponse> call, @NonNull Response<CatFactsResponse> response) {
-                    if (response.body() != null) {
-                        // ... and once we have the result, we store it in our Map for potential future use !
-                        alreadyFetchedResponses.put(page, response.body());
-
-                        // Publish the result to the LiveData, we can use 'setValue()' instead of 'postValue()'
-                        // because Retrofit goes back to the Main Thread once the query is finished !
-                        catFactsMutableLiveData.setValue(response.body().getCatFacts());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<CatFactsResponse> call, @NonNull Throwable t) {
-                    catFactsMutableLiveData.setValue(null);
-                }
-            });
-        }
-
-        return catFactsMutableLiveData;
     }
 }

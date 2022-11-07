@@ -2,14 +2,14 @@ package com.example.go4lunch.objetGoogle;
 
 public class LatLngLiteral {
 
-    Number lat;
-    Number lng;
+    Double lat;
+    Double lng;
 
-    public Number getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public Number getLng() {
+    public Double getLng() {
         return lng;
     }
 }

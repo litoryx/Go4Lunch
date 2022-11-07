@@ -23,6 +23,8 @@ import com.example.go4lunch.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,11 +71,9 @@ public class GeoFragment extends Fragment implements
 
         viewModel = new ViewModelProvider(this, GeoViewModelFactory.getInstance()).get(GeoViewModel.class);
 
-        viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), GeoViewState -> {
-            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-            assert mapFragment != null;
-            mapFragment.getMapAsync( this);
-        });
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync( this);
         return view;
     }
 
@@ -90,6 +90,15 @@ public class GeoFragment extends Fragment implements
         map.setMyLocationEnabled(true);
         map.setOnMyLocationButtonClickListener(this);
         map.setOnMyLocationClickListener(this);
+        viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
+            for (GeoViewState viewState : geoViewState) {
+                LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
+                map.addMarker(new MarkerOptions()
+                        .position(mCoord));
+            }
+
+        });
+
     }
 
     @Override

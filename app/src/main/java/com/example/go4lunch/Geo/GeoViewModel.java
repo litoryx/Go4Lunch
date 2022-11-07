@@ -13,49 +13,34 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 public class GeoViewModel extends ViewModel {
-    private final NetRepository repository;
 
-    private final MutableLiveData<Integer> currentPageMutableLiveData = new MutableLiveData<>();
+    private final LiveData<List<GeoViewState>> mGeoViewStateLiveData;
 
-    private final LiveData<GeoViewState> catFactsViewStateLiveData;
 
     public GeoViewModel(NetRepository netRepository) {
-        repository = netRepository;
 
-        // We start the page at 0 (this will trigger the switchMap to query the first page from the server)
-        currentPageMutableLiveData.setValue(0);
+        mGeoViewStateLiveData = Transformations.map(netRepository.fetchRestFollowing("48.864033,2.368425"), this::mapDataToViewState);
 
-        // If the LiveData that contains the current page information changes...
-        catFactsViewStateLiveData = Transformations.switchMap(currentPageMutableLiveData, currentPage ->
-                // ... we query the repository to get the page (with a Transformations.switchMap)...
-                Transformations.map(repository.fetchRestFollowing("48.864033,2.368425"), catFacts ->
-                        // ... and we transform the data from the server to the ViewState (with a Transformations.map)
-                        mapDataToViewState(catFacts, currentPage)
-                )
-        );
     }
 
     // This is the "final product" of our ViewModel : every data needed from the view is in this LiveData
-    public LiveData<GeoViewState> getViewStateLiveData() {
-        return catFactsViewStateLiveData;
+    public LiveData<List<GeoViewState>> getViewStateLiveData() {
+        return mGeoViewStateLiveData;
     }
 
-    private GeoViewState mapDataToViewState(@Nullable List<Place> places, int currentPage) {
-        List<String> catFactsToBeDisplayed = new ArrayList<>();
+    private List<GeoViewState> mapDataToViewState(@Nullable List<Place> places) {
+        List<GeoViewState> mGeoList = new ArrayList<>();
 
         if (places != null) {
-            // Mapping data from remote source to view data, ask to your mentor to know why it is important to do so
-            for (Place cat : places) {
-                catFactsToBeDisplayed.add(cat.getName());
+            for (Place place : places) {
+                GeoViewState mGeoViewState = new GeoViewState(place.getGeometry().getLatLngLiteral().getLat(),
+                        place.getGeometry().getLatLngLiteral().getLng());
+
+                mGeoList.add(mGeoViewState);
             }
         }
-
-        // Don't let user click to the previous button if the current page is 0 ;)
-        boolean isPreviousPageButtonClickable = currentPage != 0;
-
-        return new GeoViewState(
-                catFactsToBeDisplayed,
-                isPreviousPageButtonClickable
-        );
+        return mGeoList;
     }
+
+
 }
