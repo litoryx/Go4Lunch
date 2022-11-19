@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
@@ -24,11 +25,11 @@ public class ConnexionActivity2 extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion2);
+        FacebookSdk.sdkInitialize(this);
         startSignInActivity();
     }
 
@@ -37,6 +38,7 @@ public class ConnexionActivity2 extends AppCompatActivity {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.EmailBuilder().build());
 
         // Launch the activity
@@ -59,6 +61,7 @@ public class ConnexionActivity2 extends AppCompatActivity {
         Log.d("ConnexionActivity2", "firebUser "+fbUser);
         if (resultCode == RESULT_OK) {
             Intent activityIntent = new Intent(this, MainActivity.class);
+            activityIntent.putExtra("mfbUser", fbUser);
             startActivity(activityIntent, null);
         } else {
             if (response == null) {//Backbouton appuyé

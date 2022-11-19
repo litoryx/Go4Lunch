@@ -19,9 +19,9 @@ public class ViewRestViewModel extends ViewModel {
 
     }
 
-    public LiveData<Place> getStaffDetail(Place place){
+    public LiveData<Place> getRestDetail(Place place){
 
-                mCurrent = mNetRepository.fetchStaffFollowing(place.getPlace_id());
+                mCurrent = mNetRepository.fetchRestDetailFollowing(place.getPlace_id());
 
         return mCurrent;}
 }

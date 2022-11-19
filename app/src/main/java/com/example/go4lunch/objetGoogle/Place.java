@@ -3,6 +3,8 @@ package com.example.go4lunch.objetGoogle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 
 public class Place implements Parcelable {
@@ -12,6 +14,7 @@ public class Place implements Parcelable {
     PlaceOpeningHours opening_hours;
     String adr_address;
     String place_id;
+    List<PlacePhoto> photos;
 
     protected Place(Parcel in) {
         name = in.readString();

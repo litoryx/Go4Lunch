@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ListStaff.ListStaffFragment">
-
-</FrameLayout>
+<androidx.recyclerview.widget.RecyclerView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/list_staff"
+android:name="com.example.go4lunch.ListStaffFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+android:layout_marginLeft="16dp"
+android:layout_marginRight="16dp"
+app:layoutManager="LinearLayoutManager"
+tools:context=".ListStaff.ListStaffFragment"
+tools:listitem="@layout/fragment_list_item_staff" />

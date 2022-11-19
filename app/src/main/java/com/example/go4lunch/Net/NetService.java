@@ -17,4 +17,7 @@ public interface NetService {
     @GET("api/place/details/json")
     Call<PlaceDetailsResponse> getStaffFollowing(@Query("place_id") String place_id,
                                                  @Query("key") String key);
+
+
+
 }

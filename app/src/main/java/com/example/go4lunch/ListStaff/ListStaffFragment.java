@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.ViewRest.StaffViewModelFactory;
 import com.example.go4lunch.ViewRest.ViewRestViewModel;
+import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public class ListStaffFragment extends Fragment {
     RecyclerView mRecyclerView;
-    ViewRestViewModel mStaffViewModel;
+    StaffViewModel mStaffViewModel;
 
     public ListStaffFragment() {
         // Required empty public constructor
@@ -55,17 +56,21 @@ public class ListStaffFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_staff, container, false);
         Context context = view.getContext();
 
-        mStaffViewModel = new ViewModelProvider(this, StaffViewModelFactory.getInstance()).get(ViewRestViewModel.class);
+        mStaffViewModel = new ViewModelProvider(this, UserViewModelFactory.getInstance()).get(StaffViewModel.class);
 
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
+        mStaffViewModel.getUser().observe(getViewLifecycleOwner(), users -> {
+            if(users != null){initList(users);}
+        });
+
         return view;
     }
 
-    public void initList(List<Place> places){
-
+    public void initList(List<User> users){
+        mRecyclerView.setAdapter(new ListStaffRecyclerViewAdapter(users));
 
     }
 }

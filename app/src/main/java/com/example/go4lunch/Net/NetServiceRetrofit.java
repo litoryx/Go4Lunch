@@ -20,20 +20,11 @@ public class NetServiceRetrofit {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    private static final Gson gson = new GsonBuilder().setLenient().create();
-    private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
-    private static final String BASE_URL = "https://catfact.ninja/";
-    private static final Retrofit retrofit3 = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build();
+
 
     public static NetService getnetService(){return retrofit.create(NetService.class);}
 
     public static NetService getnetStaffService(){return retrofit2.create(NetService.class);}
 
-    public static NetService getCatApi() {
-        return retrofit.create(NetService.class);
-    }
+    public static NetService getCatApi() {return retrofit.create(NetService.class);}
 }

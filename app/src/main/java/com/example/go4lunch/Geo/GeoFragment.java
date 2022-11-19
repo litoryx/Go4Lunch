@@ -67,7 +67,6 @@ public class GeoFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_geo, container, false);
-        Context context = view.getContext();
 
         viewModel = new ViewModelProvider(this, GeoViewModelFactory.getInstance()).get(GeoViewModel.class);
 
@@ -87,9 +86,9 @@ public class GeoFragment extends Fragment implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        map.setMyLocationEnabled(true);
-        map.setOnMyLocationButtonClickListener(this);
-        map.setOnMyLocationClickListener(this);
+        //map.setMyLocationEnabled(true);
+        //map.setOnMyLocationButtonClickListener(this);
+        //map.setOnMyLocationClickListener(this);
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
             for (GeoViewState viewState : geoViewState) {
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());

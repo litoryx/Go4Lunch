@@ -48,6 +48,7 @@
             android:rowCount="2">
 
             <TextView
+                android:id="@+id/nameRDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -118,8 +119,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginLeft="72.5dp"
+                android:layout_margin="13dp"
+                android:layout_marginLeft="67.5dp"
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
@@ -129,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="65dp"
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
@@ -148,15 +149,15 @@
         </GridLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_rest"
-            android:name="com.example.go4lunch.ListRestFragment"
+            android:id="@+id/list_staff_detail"
+            android:name="com.example.go4lunch.ListStaffFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".ListRest.ListRestFragment"
-            tools:listitem="@layout/fragment_list" />
+            tools:context=".ListStaff.ListStaffFragment"
+            tools:listitem="@layout/fragment_list_item_staff" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

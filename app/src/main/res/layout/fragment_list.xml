@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="90dp"
@@ -49,7 +50,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
-
         app:layout_constraintEnd_toStartOf="@+id/workmates"
         app:layout_constraintTop_toBottomOf="@+id/distance"
         android:contentDescription="@string/nombre_user" />

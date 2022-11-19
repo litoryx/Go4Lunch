@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.go4lunch.R;
 import com.example.go4lunch.ViewRest.ViewRestActivity;
 import com.example.go4lunch.objetGoogle.Place;
+import com.example.go4lunch.objetGoogle.PlaceOpeningHoursPeriod;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
 
     List<Place> mList;
 
+
     public ListRestRecyclerViewAdapter(List<Place> mListRest){
         mList = mListRest;
     }
@@ -35,15 +37,18 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
             Place place = mList.get(position);
-            String time = place.getOpening_hours().getPeriods().get(position).getPlaceOpeningHoursPeriodDetail().getTime();
+            List<PlaceOpeningHoursPeriod> opHours = place.getOpening_hours().getPeriods();
             String adr_address = place.getAdr_address();
+            String name = place.getName();
+            String time;
 
-            holder.mNameRest.setText(place.getName());
-            if(time != null) { holder.mOpen_horary.setText(time); }else{holder.mOpen_horary.setText("Pas d'horaire");}
+            holder.mNameRest.setText(name);
+            if(opHours != null) {
+                time = opHours.get(position).getPlaceOpeningHoursPeriodDetail().getTime();
+                holder.mOpen_horary.setText(time); }else{holder.mOpen_horary.setText("Pas d'horaire");}
             holder.mAdrRest.setText(adr_address);
 
             holder.mRest.setOnClickListener(view -> {
