@@ -6,32 +6,37 @@ public class User {
 
     private String uid;
     private String username;
-    private String style;
-    private String resto;
+    private RestaurantChoose restaurantChoose;
 
     public User() { }
 
-    public User(String uid, String username, String style, String resto) {
+    public User(String uid, String username, RestaurantChoose restaurantChoose) {
         this.uid = uid;
         this.username = username;
-        this.style = style;
-        this.resto = resto;
+        this.restaurantChoose = restaurantChoose;
     }
 
-    public String getResto() {
-        return resto;
+    public String getUid() {
+        return uid;
     }
 
-    public void setResto(String resto) {
-        this.resto = resto;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    // --- GETTERS ---
-    public String getUid() { return uid; }
-    public String getUsername() { return username; }
-    public String getStyle() { return style; }
-    // --- SETTERS ---
-    public void setUsername(String username) { this.username = username; }
-    public void setUid(String uid) { this.uid = uid; }
-    public void setStyle(String style) { this.style = style; }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public RestaurantChoose getRestaurantChoose() {
+        return restaurantChoose;
+    }
+
+    public void setRestaurantChoose(RestaurantChoose restaurantChoose) {
+        this.restaurantChoose = restaurantChoose;
+    }
 }

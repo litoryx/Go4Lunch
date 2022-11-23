@@ -12,13 +12,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,27 +64,26 @@ public class UserRepository {
     }
 
     // Get User Data from Firestore
-    public List<User> getUserData(){
-        List<User> list = new ArrayList<>();
+    public LiveData<List<User>> getUserData(){
+        MutableLiveData<List<User>> userLiveData = new MutableLiveData<>();
 
         getUsersCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        list.add(document.toObject(User.class));
-                    }
-                    Log.d("TAG", list.toString());
+                    List<User> users = task.getResult().toObjects(User.class);
+                    userLiveData.setValue(users);
                 } else {
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
             }
         });
-        return list;
+        return userLiveData;
     }
 
     // Update User Username
     public void addUser(FirebaseUser user) {
+        //J'ai rien capter de comment on modifie un FirebaseUser en Map ne comprends pas pourquoi faut le faire ?
         Map<String, Object> userU = new HashMap<>();
         userU.put("uid","2");
         userU.put("username",user.getDisplayName());

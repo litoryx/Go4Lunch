@@ -62,7 +62,7 @@ public class ListStaffFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
-        mStaffViewModel.getUser().observe(getViewLifecycleOwner(), users -> {
+        mStaffViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
             if(users != null){initList(users);}
         });
 
