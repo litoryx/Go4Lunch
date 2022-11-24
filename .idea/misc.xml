@@ -3,11 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_radio_button_unchecked_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.124" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.124" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/drawable/ic_food_donation_icon.xml" value="0.124" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/activity_connexion2.xml" value="0.25416666666666665" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/activity_main_nav_header.xml" value="0.25416666666666665" />
-        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/activity_view_rest.xml" value="0.264" />
+        <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/activity_view_rest.xml" value="0.2" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/fragment_geo.xml" value="0.11302083333333333" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/fragment_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Informatique/GO4Lunch/app/src/main/res/layout/fragment_list2.xml" value="0.11302083333333333" />

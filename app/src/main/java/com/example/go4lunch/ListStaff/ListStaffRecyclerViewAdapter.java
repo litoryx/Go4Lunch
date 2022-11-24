@@ -35,8 +35,8 @@ public class ListStaffRecyclerViewAdapter extends RecyclerView.Adapter<ListStaff
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = mList.get(position);
         String username = user.getUsername();
-        String styleR = user.getStyle();
-        String resto = user.getResto();
+        String styleR = user.getRestaurantChoose().getStyle();
+        String resto = user.getRestaurantChoose().getName();
 
         holder.mUsername.setText(username);
         holder.mStyleR.setText(styleR);

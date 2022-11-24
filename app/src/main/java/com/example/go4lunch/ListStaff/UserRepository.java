@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.go4lunch.models.User;
+import com.example.go4lunch.objetGoogle.Place;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ public class UserRepository {
     private static final String COLLECTION_NAME = "user";
     private static final String USERNAME_FIELD = "Philippe";
     private static final String IS_MENTOR_FIELD = "Philippe";
+    List<User> usersSameRest;
 
     public UserRepository() { }
 
@@ -51,14 +54,6 @@ public class UserRepository {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public Task<Void> signOut(Context context){
-        return AuthUI.getInstance().signOut(context);
-    }
-
-    public Task<Void> deleteUser(Context context){
-        return AuthUI.getInstance().delete(context);
-    }
-
     private CollectionReference getUsersCollection(){
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
@@ -67,15 +62,12 @@ public class UserRepository {
     public LiveData<List<User>> getUserData(){
         MutableLiveData<List<User>> userLiveData = new MutableLiveData<>();
 
-        getUsersCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<User> users = task.getResult().toObjects(User.class);
-                    userLiveData.setValue(users);
-                } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
-                }
+        getUsersCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<User> users = task.getResult().toObjects(User.class);
+                userLiveData.setValue(users);
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.getException());
             }
         });
         return userLiveData;
@@ -83,50 +75,71 @@ public class UserRepository {
 
     // Update User Username
     public void addUser(FirebaseUser user) {
-        //J'ai rien capter de comment on modifie un FirebaseUser en Map ne comprends pas pourquoi faut le faire ?
-        Map<String, Object> userU = new HashMap<>();
-        userU.put("uid","2");
-        userU.put("username",user.getDisplayName());
-        userU.put("style","Francais");
+        getUsersCollection().document(user.getUid())
+                .set(user)
+                .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
+    }
+    //Permettra d'ajouter au clique dans une liste Place ou pas FireStore ? un Array peut-être ?
+    public void updateUserRestFavoris(Place place){
 
-        getUsersCollection().document("User")
-                .set(userU)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("success", "DocumentSnapshot successfully written!");
+    }
+
+    //Permet d'ajouter le restaurant au clique du bouton Présent.
+    public void updateUserRest(Place place){
+        FirebaseUser mUser = getCurrentUser();
+        if(mUser != null) {
+            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.id", place.getPlace_id());
+            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.name", place.getName());
+            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.style","Francais");
+        }
+    }
+
+    //Détermine la liste users qui sont dans le même restaurant dans le Place Detail
+    public LiveData<List<User>> getUserSameRest(Place place){
+        MutableLiveData<List<User>> userSameRestLiveData = new MutableLiveData<>();
+
+        getUsersCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                usersSameRest = new ArrayList<>();
+                List<User> users = task.getResult().toObjects(User.class);
+                for (User usersList:users) {
+                    if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
+                        usersSameRest.add(usersList);
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("stop", "Error writing document", e);
+                }
+                userSameRestLiveData.setValue(usersSameRest);
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.getException());
+            }
+        });
+        return userSameRestLiveData;
+    }
+
+    //Compte le nombre d'utilisateur dans le même restaurant à faire évoluer pour une liste Place qui
+    // retourne listInteger lié à ListRestViewModel
+    public LiveData<List<Integer>> CountUserSameRest(List<Place> places){
+        MutableLiveData<List<Integer>> userCountSameRestLiveData = new MutableLiveData<>();
+
+        getUsersCollection().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Integer> ListI = new ArrayList<>();
+                int i = 0;
+                List<User> users = task.getResult().toObjects(User.class);
+                for (User usersList:users) {
+                    for (Place place:places) {
+                        if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
+                            i++;
+                        }
+                        ListI.add(i);
                     }
-                });
-    }
+                }
+                userCountSameRestLiveData.setValue(ListI);
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.getException());
+            }
+        });
+        return userCountSameRestLiveData;
 
-    // Update User isMentor
-    public void updateIsMentor(Boolean isMentor) {
-        String uid = this.getCurrentUserUID();
-        if(uid != null){
-            this.getUsersCollection().document(uid).update(IS_MENTOR_FIELD, isMentor);
-        }
-    }
-
-    // Delete the User from Firestore
-    public void deleteUserFromFirestore() {
-        String uid = this.getCurrentUserUID();
-        if(uid != null){
-            this.getUsersCollection().document(uid).delete();
-        }
-    }
-
-    public String getCurrentUserUID(){
-        FirebaseUser user = getCurrentUser();
-        String uid = "null";
-        if(user != null){
-            uid = getCurrentUser().getUid();
-        }
-        return uid;
     }
 }

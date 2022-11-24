@@ -1,7 +1,12 @@
 package com.example.go4lunch.ListRest;
 
+import com.example.go4lunch.ListStaff.UserRepository;
+import com.example.go4lunch.MainApplication;
+import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.Net.NetServiceRetrofit;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -22,7 +27,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         return factory;
     }
 
+    FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MainApplication.getApplication());
     private final NetRepository mNetRepository = new NetRepository(NetServiceRetrofit.getnetService());
+    private final LocationRepository mLocationRepository= new LocationRepository(locationClient);
+    private final UserRepository mUserRepository = new UserRepository();
 
     private ViewModelFactory() {
     }
@@ -33,7 +41,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ListRestViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new ListRestViewModel(mNetRepository);
+            return (T) new ListRestViewModel(mNetRepository, mLocationRepository, mUserRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

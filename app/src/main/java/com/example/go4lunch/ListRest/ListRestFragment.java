@@ -64,6 +64,13 @@ public class ListRestFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mListRestViewModel.refresh();
+    }
+
     public void initList(List<Place> list){
         mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list));
     }

@@ -1,6 +1,7 @@
 package com.example.go4lunch.ViewRest;
 
 import com.example.go4lunch.ListRest.ViewModelFactory;
+import com.example.go4lunch.ListStaff.UserRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.Net.NetServiceRetrofit;
 
@@ -24,6 +25,7 @@ public class StaffViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private final NetRepository mNetRepository = new NetRepository(NetServiceRetrofit.getnetStaffService());
+    private final UserRepository mUserRepository = new UserRepository();
 
     private StaffViewModelFactory() {
     }
@@ -34,7 +36,7 @@ public class StaffViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ViewRestViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new ViewRestViewModel(mNetRepository);
+            return (T) new ViewRestViewModel(mNetRepository, mUserRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

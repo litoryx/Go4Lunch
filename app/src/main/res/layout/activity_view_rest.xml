@@ -19,7 +19,7 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:src="@drawable/ic_baseline_check_circle_24"
         android:contentDescription="@string/bouton_de_pr_sence"
-        android:id="@+id/favoris"
+        android:id="@+id/present"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -85,33 +85,41 @@
             android:layout_height="100dp"
             android:background="#FFFFFF"
             android:columnCount="3"
-            android:rowCount="2">
+            android:rowCount="2"
+            android:paddingLeft="125dp"
+            >
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/icone_appel"
-                android:layout_margin="13dp"
-                android:layout_marginLeft="75dp"
                 android:src="@drawable/ic_baseline_call_24"
+                android:background="@color/white"
+                android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
                 app:tint="@color/orange" />
-            <ImageView
+
+            <ImageButton
+                android:id="@+id/fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/icone_aime"
-                android:layout_margin="13dp"
-                android:layout_marginLeft="75dp"
                 android:src="@drawable/ic_baseline_star_24"
+                android:background="@color/white"
+                android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
                 app:tint="@color/orange" />
-            <ImageView
+
+            <ImageButton
+                android:id="@+id/website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/icone_world"
-                android:layout_margin="13dp"
-                android:layout_marginLeft="75dp"
+                android:background="@color/white"
+                android:layout_marginRight="125dp"
                 android:src="@drawable/ic_outline_public_24"
+                android:layout_gravity="center"
                 app:tint="@color/orange"
                 android:fontFamily="sans-serif-black"
                 />
@@ -119,8 +127,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="13dp"
-                android:layout_marginLeft="67.5dp"
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
@@ -129,8 +135,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginLeft="65dp"
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
@@ -139,8 +143,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginLeft="57.5dp"
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
