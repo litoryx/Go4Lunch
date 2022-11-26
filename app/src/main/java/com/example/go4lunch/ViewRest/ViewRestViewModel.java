@@ -39,6 +39,13 @@ public class ViewRestViewModel extends ViewModel {
             return mCurrent;
     }
 
+    public  LiveData<Place> getUpdateUserRestFavoris(Place place){
+
+        mUserRepository.updateUserRestFavoris(place);
+        mCurrent = getRestDetail(place);
+        return mCurrent;
+    }
+
     public LiveData<List<User>> getListUserSameRest(Place place){
 
         return mUserRepository.getUserSameRest(place);

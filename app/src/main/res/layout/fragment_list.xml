@@ -31,7 +31,7 @@
         android:id="@+id/horary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ouvert_jusqu_7h"
+        android:text="@string/horarynot"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -50,12 +50,12 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_person_24"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintEnd_toStartOf="@+id/workmates"
+        app:layout_constraintEnd_toStartOf="@+id/workmates_number"
         app:layout_constraintTop_toBottomOf="@+id/distance"
         android:contentDescription="@string/nombre_user" />
 
     <TextView
-        android:id="@+id/workmates"
+        android:id="@+id/workmates_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_2"

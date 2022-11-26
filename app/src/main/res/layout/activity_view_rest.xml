@@ -59,6 +59,7 @@
                 android:text="@string/le_nzc" />
 
             <ImageView
+                android:id="@+id/star_rest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/toile_resto"

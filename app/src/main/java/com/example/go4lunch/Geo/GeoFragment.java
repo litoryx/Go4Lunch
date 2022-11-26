@@ -86,12 +86,10 @@ public class GeoFragment extends Fragment implements
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
-        //map.setMyLocationEnabled(true);
-        //map.setOnMyLocationButtonClickListener(this);
-        //map.setOnMyLocationClickListener(this);
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
             for (GeoViewState viewState : geoViewState) {
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
+
                 map.addMarker(new MarkerOptions()
                         .position(mCoord));
             }

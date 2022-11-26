@@ -1,5 +1,8 @@
 package com.example.go4lunch.Geo;
 
+import android.location.Location;
+
+import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.objetGoogle.Place;
 
@@ -15,11 +18,18 @@ import androidx.lifecycle.ViewModel;
 public class GeoViewModel extends ViewModel {
 
     private final LiveData<List<GeoViewState>> mGeoViewStateLiveData;
+    NetRepository mNetRepository;
+    LocationRepository mLocationRepository;
+
+    public GeoViewModel(NetRepository netRepository, LocationRepository locationRepository) {
+        mNetRepository = netRepository;
+        mLocationRepository = locationRepository;
 
 
-    public GeoViewModel(NetRepository netRepository) {
+        LiveData<Location> locationLiveData = locationRepository.getLocationLiveData();
 
-        mGeoViewStateLiveData = Transformations.map(netRepository.fetchRestFollowing("48.864033,2.368425"), this::mapDataToViewState);
+        mGeoViewStateLiveData = Transformations.switchMap(locationLiveData, location ->
+                Transformations.map(mNetRepository.fetchRestFollowing(location.getLatitude() + "," + location.getLongitude()), this::mapDataToViewState));
 
     }
 
@@ -28,14 +38,13 @@ public class GeoViewModel extends ViewModel {
         return mGeoViewStateLiveData;
     }
 
-    private List<GeoViewState> mapDataToViewState(@Nullable List<Place> places) {
+    public List<GeoViewState> mapDataToViewState(@Nullable List<Place> places) {
         List<GeoViewState> mGeoList = new ArrayList<>();
 
         if (places != null) {
             for (Place place : places) {
                 GeoViewState mGeoViewState = new GeoViewState(place.getGeometry().getLatLngLiteral().getLat(),
                         place.getGeometry().getLatLngLiteral().getLng());
-
                 mGeoList.add(mGeoViewState);
             }
         }

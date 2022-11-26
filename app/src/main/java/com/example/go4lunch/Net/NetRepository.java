@@ -1,30 +1,14 @@
 package com.example.go4lunch.Net;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.go4lunch.BuildConfig;
+
 import com.example.go4lunch.objetGoogle.Place;
 import com.example.go4lunch.objetGoogle.PlaceDetailsResponse;
 import com.example.go4lunch.objetGoogle.PlacesNearbySearchResponse;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

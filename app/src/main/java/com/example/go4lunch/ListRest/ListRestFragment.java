@@ -56,8 +56,10 @@ public class ListRestFragment extends Fragment {
 
         mListRestViewModel.getList().observe(getViewLifecycleOwner(), places -> {
             if(places != null){
-                initList(places);
-                Log.d("ListRestFragment","Intégration list" + places);
+                mListRestViewModel.getCountUserRest().observe(getViewLifecycleOwner(), numbers -> mListRestViewModel.getListDistancesRestUser().observe(getViewLifecycleOwner(), distances -> {
+                    initList(places, numbers, distances);
+                    Log.d("ListRestFragment","Intégration list" + places);
+                }));
             }
         });
 
@@ -71,7 +73,7 @@ public class ListRestFragment extends Fragment {
         mListRestViewModel.refresh();
     }
 
-    public void initList(List<Place> list){
-        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list));
+    public void initList(List<Place> list, List<Integer> countUserSameRest, List<Float> distances){
+        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list, countUserSameRest, distances));
     }
 }

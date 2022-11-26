@@ -1,28 +1,17 @@
 package com.example.go4lunch.ListStaff;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -30,8 +19,6 @@ import androidx.lifecycle.MutableLiveData;
 public class UserRepository {
     private static volatile UserRepository instance;
     private static final String COLLECTION_NAME = "user";
-    private static final String USERNAME_FIELD = "Philippe";
-    private static final String IS_MENTOR_FIELD = "Philippe";
     List<User> usersSameRest;
 
     public UserRepository() { }
@@ -82,7 +69,10 @@ public class UserRepository {
     }
     //Permettra d'ajouter au clique dans une liste Place ou pas FireStore ? un Array peut-être ?
     public void updateUserRestFavoris(Place place){
-
+        FirebaseUser mUser = getCurrentUser();
+        if(mUser != null) {
+            getUsersCollection().document(mUser.getUid()).collection("RestFavoris").add(place);
+        }
     }
 
     //Permet d'ajouter le restaurant au clique du bouton Présent.
@@ -104,8 +94,10 @@ public class UserRepository {
                 usersSameRest = new ArrayList<>();
                 List<User> users = task.getResult().toObjects(User.class);
                 for (User usersList:users) {
+                    if (usersList.getRestaurantChoose() != null){
                     if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
                         usersSameRest.add(usersList);
+                    }
                     }
                 }
                 userSameRestLiveData.setValue(usersSameRest);
@@ -128,8 +120,10 @@ public class UserRepository {
                 List<User> users = task.getResult().toObjects(User.class);
                 for (User usersList:users) {
                     for (Place place:places) {
-                        if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
-                            i++;
+                        if (usersList.getRestaurantChoose() != null) {
+                            if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
+                                i++;
+                            }
                         }
                         ListI.add(i);
                     }
@@ -140,6 +134,5 @@ public class UserRepository {
             }
         });
         return userCountSameRestLiveData;
-
     }
 }

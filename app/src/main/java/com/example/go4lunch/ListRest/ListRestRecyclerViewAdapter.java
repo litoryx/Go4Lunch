@@ -1,6 +1,5 @@
 package com.example.go4lunch.ListRest;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +22,14 @@ import static androidx.core.content.ContextCompat.startActivity;
 public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRecyclerViewAdapter.ViewHolder> {
 
     List<Place> mList;
+    List<Integer> mListCountSameRest;
+    List<Float> mListDistancesRestForUser;
 
 
-    public ListRestRecyclerViewAdapter(List<Place> mListRest){
+    public ListRestRecyclerViewAdapter(List<Place> mListRest, List<Integer> listCountSameRest, List<Float> distances){
         mList = mListRest;
+        mListCountSameRest = listCountSameRest;
+        mListDistancesRestForUser = distances;
     }
 
     @NonNull
@@ -40,15 +43,21 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
             Place place = mList.get(position);
+            int numberUserInSameRest = mListCountSameRest.get(position);
+            Float numberMetersDistance = mListDistancesRestForUser.get(position);
+            String stNumberMetersDistance = numberMetersDistance+"m";
+            String stNumberUserInSameRest = "("+numberUserInSameRest+")";
             List<PlaceOpeningHoursPeriod> opHours = place.getOpening_hours().getPeriods();
             String adr_address = place.getAdr_address();
             String name = place.getName();
-            String time;
 
+            holder.mDistance.setText(stNumberMetersDistance);
+            holder.mWorkmates.setText(stNumberUserInSameRest);
             holder.mNameRest.setText(name);
             if(opHours != null) {
-                time = opHours.get(position).getPlaceOpeningHoursPeriodDetail().getTime();
-                holder.mOpen_horary.setText(time); }else{holder.mOpen_horary.setText("Pas d'horaire");}
+                String time = opHours.get(position).getPlaceOpeningHoursPeriodDetail().getTime();
+                holder.mOpen_horary.setText(time);
+            }
             holder.mAdrRest.setText(adr_address);
 
             holder.mRest.setOnClickListener(view -> {
@@ -77,7 +86,7 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
             mAdrRest = view.findViewById(R.id.adrRest);
             mOpen_horary = view.findViewById(R.id.horary);
             mDistance = view.findViewById(R.id.distance);
-            mWorkmates = view.findViewById(R.id.workmates);
+            mWorkmates = view.findViewById(R.id.workmates_number);
             mRest = view.findViewById(R.id.rest);
         }
     }

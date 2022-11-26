@@ -1,7 +1,11 @@
 package com.example.go4lunch.Geo;
 
+import com.example.go4lunch.MainApplication;
+import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.Net.NetServiceRetrofit;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -22,11 +26,9 @@ public class GeoViewModelFactory implements ViewModelProvider.Factory {
         return factory;
     }
 
-    // Here is our "graph / tree" of injection : CatFactsRepository needs CatApi, and later on, CatFactsViewModel will need CatFactsRepository
-    private final NetRepository catFactsRepository = new NetRepository(
-            // We inject the CatApi in the Repository constructor
-            NetServiceRetrofit.getCatApi()
-    );
+    FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MainApplication.getApplication());
+    private final NetRepository catFactsRepository = new NetRepository(NetServiceRetrofit.getCatApi());
+    private final LocationRepository mLocationRepository = new LocationRepository(locationClient);
 
     private GeoViewModelFactory() {
     }
@@ -37,7 +39,7 @@ public class GeoViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(GeoViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new GeoViewModel(catFactsRepository);
+            return (T) new GeoViewModel(catFactsRepository, mLocationRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

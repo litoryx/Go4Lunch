@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.go4lunch.ListStaff.ListStaffRecyclerViewAdapter;
@@ -27,6 +28,8 @@ public class ViewRestActivity extends AppCompatActivity {
     FloatingActionButton mButtonPresent;
     ImageButton mImageButtonWS;
     ImageButton mImageButtonCall;
+    ImageButton mImageButtonFav;
+    ImageView mStartRest;
     RecyclerView mRecyclerView;
 
     @Override
@@ -40,6 +43,8 @@ public class ViewRestActivity extends AppCompatActivity {
         mImageButtonWS = findViewById(R.id.website);
         mImageButtonCall = findViewById(R.id.call);
 
+        mStartRest.setVisibility(View.INVISIBLE);
+
         Intent intent = getIntent();
         Place place = intent.getParcelableExtra("mPlace");
 
@@ -49,7 +54,6 @@ public class ViewRestActivity extends AppCompatActivity {
 
         mButtonPresent.setOnClickListener(view -> mViewRestViewModel.getUpdateUserRest(place).observe(ViewRestActivity.this, placeDetail ->{
             if(mButtonPresent.getContentBackground() == null) {
-                initPlace(placeDetail);
                 mButtonPresent.setImageResource(R.drawable.ic_baseline_check_circle_24);
             }else{
                 mButtonPresent.setImageDrawable(null);
@@ -61,6 +65,10 @@ public class ViewRestActivity extends AppCompatActivity {
             Intent intent1 = new Intent(Intent.ACTION_DIAL, uri);
             startActivity(intent1);
         });
+
+        mImageButtonFav.setOnClickListener(view -> mViewRestViewModel.getUpdateUserRestFavoris(place).observe(ViewRestActivity.this, placeDetail ->{
+            if(mStartRest.getVisibility() == View.INVISIBLE){mStartRest.setVisibility(View.VISIBLE);}
+        }));
 
         mImageButtonWS.setOnClickListener(view -> {
             Uri uri = Uri.parse("http://www.google.com"); // missing 'http://' will cause crashed
