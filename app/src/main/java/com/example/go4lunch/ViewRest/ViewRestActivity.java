@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.example.go4lunch.ListStaff.ListStaffRecyclerViewAdapter;
 import com.example.go4lunch.R;
+import com.example.go4lunch.models.Restaurant;
+import com.example.go4lunch.models.RestaurantDetailViewState;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +33,7 @@ public class ViewRestActivity extends AppCompatActivity {
     ImageButton mImageButtonFav;
     ImageView mStartRest;
     RecyclerView mRecyclerView;
+    ListStaffRecyclerViewAdapter listStaffRecyclerViewAdapter = new ListStaffRecyclerViewAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,47 +49,52 @@ public class ViewRestActivity extends AppCompatActivity {
         mStartRest.setVisibility(View.INVISIBLE);
 
         Intent intent = getIntent();
-        Place place = intent.getParcelableExtra("mPlace");
+        Restaurant place = intent.getParcelableExtra("mPlace");
 
         mViewRestViewModel = new ViewModelProvider(this, StaffViewModelFactory.getInstance()).get(ViewRestViewModel.class);
 
         mViewRestViewModel.getRestDetail(place).observe(this, this::initPlace);
 
-        mButtonPresent.setOnClickListener(view -> mViewRestViewModel.getUpdateUserRest(place).observe(ViewRestActivity.this, placeDetail ->{
-            if(mButtonPresent.getContentBackground() == null) {
+        mRecyclerView.setAdapter(listStaffRecyclerViewAdapter);
+    }
+
+    public void initPlace(RestaurantDetailViewState place){
+        mName_Detail.setText(place.getName());
+        mAdr_Detail.setText(place.getAdr_address());
+
+        listStaffRecyclerViewAdapter.submitList(place.getUserCurrentRest());
+
+        mButtonPresent.setOnClickListener(view -> {
+            if(mButtonPresent.getContentBackground() == null || place.getRestCurrent() == null){
+                mViewRestViewModel.setUpdateRestChoose(place); //Est-ce bon comme ça ? car sinon je ne comprend pas alors setOnclickListener comment le gérer
                 mButtonPresent.setImageResource(R.drawable.ic_baseline_check_circle_24);
-            }else{
+                }
+            else{
                 mButtonPresent.setImageDrawable(null);
+                }
+        });
+
+        mImageButtonFav.setOnClickListener(view -> {
+            if(!place.getFav()){
+                mViewRestViewModel.setUpdateListFavRest(place);
+                mStartRest.setVisibility(View.VISIBLE);
+            }else{
+                mStartRest.setVisibility(View.INVISIBLE);
             }
-        }));
+        });
 
         mImageButtonCall.setOnClickListener(view -> {
-            Uri uri = Uri.parse("123456789");
+            String phoneNumber = place.getFormatted_phone_number();
+            Uri uri = Uri.parse(phoneNumber);
             Intent intent1 = new Intent(Intent.ACTION_DIAL, uri);
             startActivity(intent1);
         });
 
-        mImageButtonFav.setOnClickListener(view -> mViewRestViewModel.getUpdateUserRestFavoris(place).observe(ViewRestActivity.this, placeDetail ->{
-            if(mStartRest.getVisibility() == View.INVISIBLE){mStartRest.setVisibility(View.VISIBLE);}
-        }));
-
         mImageButtonWS.setOnClickListener(view -> {
-            Uri uri = Uri.parse("http://www.google.com"); // missing 'http://' will cause crashed
-            Intent intent12 = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent12);
+            String uRi = place.getUrl();
+            Uri uri = Uri.parse(uRi); // missing 'http://' will cause crashed
+            Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent2);
         });
-
-        mViewRestViewModel.getListUserSameRest(place).observe(this, this::initListSameRest);
-    }
-
-
-
-    public void initListSameRest(List<User> users){
-        mRecyclerView.setAdapter(new ListStaffRecyclerViewAdapter(users));
-    }
-
-    public void initPlace(Place place){
-        mName_Detail.setText(place.getName());
-        mAdr_Detail.setText(place.getAdr_address());
     }
 }

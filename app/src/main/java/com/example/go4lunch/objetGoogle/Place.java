@@ -11,14 +11,22 @@ public class Place implements Parcelable {
 
     String name;
     Geometry geometry;
+    String url;
+    String formatted_phone_number;
     PlaceOpeningHours opening_hours;
     String adr_address;
     String place_id;
     List<PlacePhoto> photos;
 
+    public List<PlacePhoto> getPhotos() {
+        return photos;
+    }
+
     protected Place(Parcel in) {
         name = in.readString();
         adr_address = in.readString();
+        url = in.readString();
+        formatted_phone_number = in.readString();
         place_id = in.readString();
     }
 
@@ -52,6 +60,14 @@ public class Place implements Parcelable {
         return adr_address;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public String getFormatted_phone_number() {
+        return formatted_phone_number;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -65,10 +81,14 @@ public class Place implements Parcelable {
         return 0;
     }
 
+
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(adr_address);
+        parcel.writeString(url);
+        parcel.writeString(formatted_phone_number);
         parcel.writeString(place_id);
     }
 }

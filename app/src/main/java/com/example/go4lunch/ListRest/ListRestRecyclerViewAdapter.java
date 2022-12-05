@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.go4lunch.R;
 import com.example.go4lunch.ViewRest.ViewRestActivity;
+import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.objetGoogle.Place;
 import com.example.go4lunch.objetGoogle.PlaceOpeningHoursPeriod;
 
@@ -21,15 +22,10 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRecyclerViewAdapter.ViewHolder> {
 
-    List<Place> mList;
-    List<Integer> mListCountSameRest;
-    List<Float> mListDistancesRestForUser;
+    List<Restaurant> mList;
 
-
-    public ListRestRecyclerViewAdapter(List<Place> mListRest, List<Integer> listCountSameRest, List<Float> distances){
+    public ListRestRecyclerViewAdapter(List<Restaurant> mListRest){
         mList = mListRest;
-        mListCountSameRest = listCountSameRest;
-        mListDistancesRestForUser = distances;
     }
 
     @NonNull
@@ -42,9 +38,9 @@ public class ListRestRecyclerViewAdapter extends RecyclerView.Adapter<ListRestRe
 
     @Override
     public void onBindViewHolder(@NonNull ListRestRecyclerViewAdapter.ViewHolder holder, int position) {
-            Place place = mList.get(position);
-            int numberUserInSameRest = mListCountSameRest.get(position);
-            Float numberMetersDistance = mListDistancesRestForUser.get(position);
+            Restaurant place = mList.get(position);
+            int numberUserInSameRest = mList.get(position).getNumbers_user_rest();
+            Float numberMetersDistance = mList.get(position).getDistanceRest();
             String stNumberMetersDistance = numberMetersDistance+"m";
             String stNumberUserInSameRest = "("+numberUserInSameRest+")";
             List<PlaceOpeningHoursPeriod> opHours = place.getOpening_hours().getPeriods();

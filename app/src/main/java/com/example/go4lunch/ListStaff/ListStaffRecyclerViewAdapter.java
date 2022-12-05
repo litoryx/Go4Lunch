@@ -1,5 +1,6 @@
 package com.example.go4lunch.ListStaff;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,17 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 //Le problème est-ce que j'ai utilisé un RecyclerView.Adapter au lieu de celui de FirestoreAdapter,
 // la liste n'apparait pas, mais ne me met aucune erreur aussi donc je me dit que c'est plus le connexion à Firestore ?
-public class ListStaffRecyclerViewAdapter extends RecyclerView.Adapter<ListStaffRecyclerViewAdapter.ViewHolder> {
+public class ListStaffRecyclerViewAdapter extends ListAdapter<User, ListStaffRecyclerViewAdapter.ViewHolder> {
 
-    List<User> mList;
 
-    public ListStaffRecyclerViewAdapter(List<User> user){mList = user;}
+    public ListStaffRecyclerViewAdapter(){
+        super(new ItemCallback());
+        }
 
     @NonNull
     @Override
@@ -33,19 +37,7 @@ public class ListStaffRecyclerViewAdapter extends RecyclerView.Adapter<ListStaff
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = mList.get(position);
-        String username = user.getUsername();
-        String styleR = user.getRestaurantChoose().getStyle();
-        String resto = user.getRestaurantChoose().getName();
-
-        holder.mUsername.setText(username);
-        holder.mStyleR.setText(styleR);
-        holder.mResto.setText(resto);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
+        holder.bind(getItem(position));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +50,28 @@ public class ListStaffRecyclerViewAdapter extends RecyclerView.Adapter<ListStaff
             mUsername = view.findViewById(R.id.username);
             mStyleR = view.findViewById(R.id.styleR);
             mResto = view.findViewById(R.id.resto);
+        }
+
+        public void bind(User user) {
+            String username = user.getUsername();
+            String styleR = user.getRestaurantChoose().getStyle();
+            String resto = user.getRestaurantChoose().getName();
+
+            mUsername.setText(username);
+            mStyleR.setText(styleR);
+            mResto.setText(resto);
+        }
+    }
+
+    private static class ItemCallback extends DiffUtil.ItemCallback<User> {
+        @Override
+        public boolean areItemsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+            return oldItem.equals(newItem);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
+            return true;
         }
     }
 }

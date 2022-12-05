@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView mBottomNavigationView;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
-
     UserRepository mUserRepository;
 
     @Override
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         FirebaseUser mfbuser = intent.getParcelableExtra("mfbUser");
         mUserRepository.addUser(mfbuser);
-
 
         if (savedInstanceState == null) {
             showFragment(GeoFragment.newInstance());

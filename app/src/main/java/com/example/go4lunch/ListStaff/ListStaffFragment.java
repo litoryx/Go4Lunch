@@ -19,6 +19,7 @@ import com.example.go4lunch.ViewRest.ViewRestViewModel;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ import java.util.List;
 public class ListStaffFragment extends Fragment {
     RecyclerView mRecyclerView;
     StaffViewModel mStaffViewModel;
+    private ListStaffRecyclerViewAdapter mListStaff = new ListStaffRecyclerViewAdapter(new ArrayList<>());
 
     public ListStaffFragment() {
         // Required empty public constructor
@@ -56,14 +58,17 @@ public class ListStaffFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_staff, container, false);
         Context context = view.getContext();
 
+
         mStaffViewModel = new ViewModelProvider(this, UserViewModelFactory.getInstance()).get(StaffViewModel.class);
 
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(mListStaff);
 
         mStaffViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
-            if(users != null){initList(users);}
+            mListStaff.mList = users;
+            mListStaff.notifyDataSetChanged();
         });
 
         return view;

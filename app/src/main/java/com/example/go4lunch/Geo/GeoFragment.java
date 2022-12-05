@@ -1,16 +1,12 @@
 package com.example.go4lunch.Geo;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,7 +19,9 @@ import com.example.go4lunch.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -35,7 +33,7 @@ public class GeoFragment extends Fragment implements
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMarkerClickListener {
 
     GeoViewModel viewModel;
     GoogleMap map;
@@ -90,12 +88,28 @@ public class GeoFragment extends Fragment implements
             for (GeoViewState viewState : geoViewState) {
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
 
-                map.addMarker(new MarkerOptions()
-                        .position(mCoord));
+                if(viewState.getUserCurrent() != null) {
+                    if (viewState.getUserCurrent()) {
+                        map.addMarker(new MarkerOptions()
+                                .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    } else {
+                        map.addMarker(new MarkerOptions()
+                                .position(mCoord));
+                    }
+                }
             }
-
+            map.setOnMarkerClickListener(this);
         });
 
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        Integer clickCount = (Integer) marker.getTag();
+
+        if(clickCount != null){marker.getTitle();}
+
+        return false;
     }
 
     @Override
@@ -108,4 +122,6 @@ public class GeoFragment extends Fragment implements
         Toast.makeText(view.getContext(), "Current location:\n" + location, Toast.LENGTH_LONG)
                 .show();
     }
+
+
 }

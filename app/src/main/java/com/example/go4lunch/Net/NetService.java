@@ -18,6 +18,4 @@ public interface NetService {
     Call<PlaceDetailsResponse> getStaffFollowing(@Query("place_id") String place_id,
                                                  @Query("key") String key);
 
-
-
 }

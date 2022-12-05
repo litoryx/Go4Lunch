@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.objetGoogle.Place;
 
 import java.util.List;
@@ -54,14 +55,7 @@ public class ListRestFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         // Inflate the layout for this fragment
 
-        mListRestViewModel.getList().observe(getViewLifecycleOwner(), places -> {
-            if(places != null){
-                mListRestViewModel.getCountUserRest().observe(getViewLifecycleOwner(), numbers -> mListRestViewModel.getListDistancesRestUser().observe(getViewLifecycleOwner(), distances -> {
-                    initList(places, numbers, distances);
-                    Log.d("ListRestFragment","Intégration list" + places);
-                }));
-            }
-        });
+        mListRestViewModel.getListRest().observe(getViewLifecycleOwner(), this::initList);
 
         return view;
     }
@@ -73,7 +67,7 @@ public class ListRestFragment extends Fragment {
         mListRestViewModel.refresh();
     }
 
-    public void initList(List<Place> list, List<Integer> countUserSameRest, List<Float> distances){
-        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list, countUserSameRest, distances));
+    public void initList(List<Restaurant> list){
+        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list));
     }
 }

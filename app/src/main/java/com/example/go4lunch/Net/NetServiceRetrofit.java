@@ -15,16 +15,9 @@ public class NetServiceRetrofit {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    private static final Retrofit retrofit2 = new Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/maps/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-
-
     public static NetService getnetService(){return retrofit.create(NetService.class);}
 
-    public static NetService getnetStaffService(){return retrofit2.create(NetService.class);}
+    public static NetService getnetStaffService(){return retrofit.create(NetService.class);}
 
     public static NetService getCatApi() {return retrofit.create(NetService.class);}
 }

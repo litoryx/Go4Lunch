@@ -55,7 +55,9 @@ public class NetRepository {
     }
 
 
+
     public LiveData<Place> fetchRestDetailFollowing(String place_id){
+
         MutableLiveData<Place> nearby = new MutableLiveData<>();
 
         netService = NetServiceRetrofit.getnetStaffService();
