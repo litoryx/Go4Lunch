@@ -11,6 +11,7 @@ import com.example.go4lunch.objetGoogle.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -69,10 +70,20 @@ public class UserRepository {
 
     // Update User Username
     public void addUser(FirebaseUser user) {
-        getUsersCollection().document(user.getUid())
-                .set(user)
-                .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
-                .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
+
+        List<User> listUser = getUserData().getValue();
+
+        if(listUser != null) {
+            for (User used : listUser) {
+                if (!used.getMail().equals(user.getEmail())) {
+                    getUsersCollection().document(user.getUid())
+                        .set(user)
+                        .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
+                        .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));}
+
+            }
+        }
+
     }
     //Permettra d'ajouter au clique dans une liste Place ou pas FireStore ? un Array peut-être ?
     public void updateUserRestFavoris(RestaurantDetailViewState place){
@@ -167,26 +178,26 @@ public class UserRepository {
     public LiveData<List<Restaurant>> createListRest(LiveData<List<Place>> places, LiveData<Location> locationLiveData){
         List<Place> mListRestCurrent = places.getValue();
         LiveData<List<Integer>> mListCountCurrent = CountUserSameRest(mListRestCurrent);
-        LiveData<List<Float>> mListDistancesCurrent = createListDistancesRestUser(places, locationLiveData);
-        Restaurant restModel = new Restaurant(null);
+        List<Float> mListDistancesCurrent = createListDistancesRestUser(places, locationLiveData);
+        Restaurant restModel = null;
+
         MutableLiveData<List<Restaurant>> mListRestLiveData = new MutableLiveData<>();
         int i = 0;
 
         if (mListRestCurrent != null) {
             for (Place place:mListRestCurrent){
-                restModel.setName(place.getName());
-                restModel.setUrl(place.getUrl());
-                restModel.setAdr_address(place.getAdr_address());
-                restModel.setPlace_id(place.getPlace_id());
                 String url = photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference());
-                restModel.setPhoto(url);
-                restModel.setFormatted_phone_number(place.getFormatted_phone_number());
-                restModel.setOpening_hours(place.getOpening_hours());
                 if (mListCountCurrent.getValue() != null) {
-                    restModel.setNumbers_user_rest(mListCountCurrent.getValue().get(i));
+                    if (mListDistancesCurrent != null) {
+                        restModel = new Restaurant(place.getName(),
+                                place.getUrl(), place.getFormatted_phone_number(), place.getOpening_hours(),
+                                place.getAdr_address(),
+                                place.getPlace_id(),
+                                url,
+                                mListCountCurrent.getValue().get(i),
+                                mListDistancesCurrent.get(i));
+                    }
                 }
-                assert mListDistancesCurrent.getValue() != null;
-                restModel.setDistanceRest(mListDistancesCurrent.getValue().get(i));
                 mListRestConvert.add(restModel);
                 i++;
             }
@@ -197,12 +208,12 @@ public class UserRepository {
 
 
 
-    public LiveData<List<Float>> createListDistancesRestUser(LiveData<List<Place>> places, LiveData<Location> locationLiveData){
-        MutableLiveData<List<Float>> restDistLiveData = new MutableLiveData<>();
+    public List<Float> createListDistancesRestUser(LiveData<List<Place>> places, LiveData<Location> locationLiveData){
+        List<Float> restDistLiveData = new ArrayList<>();
         if (places.getValue() != null) {
             int mSize = places.getValue().size();
 
-            for (int i = 0; i <= mSize; i++) {
+            for (int i = 0; i < mSize; i++) {
                 Double mLat = places.getValue().get(i).getGeometry().getLatLngLiteral().getLat();
                 Double mLng = places.getValue().get(i).getGeometry().getLatLngLiteral().getLng();
                 Location locationR = new Location("Rest" + i);
@@ -213,9 +224,8 @@ public class UserRepository {
                 if (currentLocation != null) {
                     mDistance = currentLocation.distanceTo(locationR);
                 }
-                mListLocationFloatRest.add(mDistance);
+                restDistLiveData.add(mDistance);
             }
-            restDistLiveData.setValue(mListLocationFloatRest);
         }
             return restDistLiveData;
     }

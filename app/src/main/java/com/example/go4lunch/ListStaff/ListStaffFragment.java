@@ -30,7 +30,7 @@ import java.util.List;
 public class ListStaffFragment extends Fragment {
     RecyclerView mRecyclerView;
     StaffViewModel mStaffViewModel;
-    private ListStaffRecyclerViewAdapter mListStaff = new ListStaffRecyclerViewAdapter(new ArrayList<>());
+    private ListStaffRecyclerViewAdapter mListStaff = new ListStaffRecyclerViewAdapter();
 
     public ListStaffFragment() {
         // Required empty public constructor
@@ -58,7 +58,6 @@ public class ListStaffFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_staff, container, false);
         Context context = view.getContext();
 
-
         mStaffViewModel = new ViewModelProvider(this, UserViewModelFactory.getInstance()).get(StaffViewModel.class);
 
         mRecyclerView = (RecyclerView) view;
@@ -67,15 +66,10 @@ public class ListStaffFragment extends Fragment {
         mRecyclerView.setAdapter(mListStaff);
 
         mStaffViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
-            mListStaff.mList = users;
+            mListStaff.submitList(users);
             mListStaff.notifyDataSetChanged();
         });
 
         return view;
-    }
-
-    public void initList(List<User> users){
-        mRecyclerView.setAdapter(new ListStaffRecyclerViewAdapter(users));
-
     }
 }

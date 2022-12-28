@@ -89,15 +89,14 @@ public class GeoFragment extends Fragment implements
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
 
                 if(viewState.getUserCurrent() != null) {
-                    if (viewState.getUserCurrent()) {
-                        map.addMarker(new MarkerOptions()
-                                .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    map.addMarker(new MarkerOptions()
+                            .position(mCoord));
+
                     } else {
-                        map.addMarker(new MarkerOptions()
-                                .position(mCoord));
+                    map.addMarker(new MarkerOptions()
+                            .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     }
                 }
-            }
             map.setOnMarkerClickListener(this);
         });
 

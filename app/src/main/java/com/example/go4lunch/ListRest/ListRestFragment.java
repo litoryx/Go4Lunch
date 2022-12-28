@@ -1,8 +1,10 @@
 package com.example.go4lunch.ListRest;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,6 +31,7 @@ public class ListRestFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     ListRestViewModel mListRestViewModel;
+    private ListRestRecyclerViewAdapter mListRest = new ListRestRecyclerViewAdapter();
 
     public ListRestFragment() {
         // Required empty public constructor
@@ -55,7 +58,16 @@ public class ListRestFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         // Inflate the layout for this fragment
 
-        mListRestViewModel.getListRest().observe(getViewLifecycleOwner(), this::initList);
+        mListRestViewModel.getListRest().observe(getViewLifecycleOwner(), list-> {
+                mListRest.submitList(list);
+                mListRest.notifyDataSetChanged();
+        });
+
+        ActivityCompat.requestPermissions(
+                requireActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                0
+        );
 
         return view;
     }
@@ -65,9 +77,5 @@ public class ListRestFragment extends Fragment {
         super.onResume();
 
         mListRestViewModel.refresh();
-    }
-
-    public void initList(List<Restaurant> list){
-        mRecyclerView.setAdapter(new ListRestRecyclerViewAdapter(list));
     }
 }

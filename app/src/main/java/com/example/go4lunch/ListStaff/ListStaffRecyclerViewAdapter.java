@@ -53,13 +53,19 @@ public class ListStaffRecyclerViewAdapter extends ListAdapter<User, ListStaffRec
         }
 
         public void bind(User user) {
-            String username = user.getUsername();
-            String styleR = user.getRestaurantChoose().getStyle();
-            String resto = user.getRestaurantChoose().getName();
 
+                String username = user.getUsername();
             mUsername.setText(username);
-            mStyleR.setText(styleR);
-            mResto.setText(resto);
+            if(user.getRestaurantChoose() != null){
+                String styleR = user.getRestaurantChoose().getStyle();
+                String resto = user.getRestaurantChoose().getName();
+
+                mStyleR.setText(styleR);
+                mResto.setText(resto);
+            }
+
+
+
         }
     }
 

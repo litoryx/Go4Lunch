@@ -4,16 +4,27 @@ import androidx.annotation.Nullable;
 
 public class User {
 
+
     private String uid;
     private String username;
     private RestaurantChoose restaurantChoose;
+    private String mail;
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public User() { }
 
-    public User(String uid, String username, RestaurantChoose restaurantChoose) {
+    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail) {
         this.uid = uid;
         this.username = username;
         this.restaurantChoose = restaurantChoose;
+        this.mail = mail;
     }
 
     public String getUid() {

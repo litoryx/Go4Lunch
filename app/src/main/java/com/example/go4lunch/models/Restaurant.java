@@ -21,6 +21,21 @@ public class Restaurant implements Parcelable {
     Integer numbers_user_rest;
     Float distanceRest;
 
+    public Restaurant(String name, String url, String formatted_phone_number,
+                      PlaceOpeningHours opening_hours, String adr_address, String place_id,
+                      String photo, Integer numbers_user_rest, Float distanceRest) {
+
+        this.name = name;
+        this.url = url;
+        this.formatted_phone_number = formatted_phone_number;
+        this.opening_hours = opening_hours;
+        this.adr_address = adr_address;
+        this.place_id = place_id;
+        this.photo = photo;
+        this.numbers_user_rest = numbers_user_rest;
+        this.distanceRest = distanceRest;
+    }
+
     public Restaurant(Parcel in) {
         name = in.readString();
         url = in.readString();
@@ -28,6 +43,8 @@ public class Restaurant implements Parcelable {
         adr_address = in.readString();
         place_id = in.readString();
         photo = in.readString();
+        numbers_user_rest = in.readInt();
+        distanceRest = in.readFloat();
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {

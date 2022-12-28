@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         mToolbar = findViewById(R.id.activity_toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
+        SearchView simpleSearchView = (SearchView) findViewById ( R . id . simpleSearchView );
         setSupportActionBar(mToolbar);
         mUserRepository = new UserRepository();
         this.configureDrawerLayout();
@@ -64,6 +66,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         FirebaseUser mfbuser = intent.getParcelableExtra("mfbUser");
         mUserRepository.addUser(mfbuser);
+
+
+        simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+
 
         if (savedInstanceState == null) {
             showFragment(GeoFragment.newInstance());

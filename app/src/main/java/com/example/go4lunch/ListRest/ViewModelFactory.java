@@ -5,6 +5,7 @@ import com.example.go4lunch.MainApplication;
 import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.Net.NetServiceRetrofit;
+import com.example.go4lunch.models.PermissionChecker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -31,6 +32,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     private final NetRepository mNetRepository = new NetRepository(NetServiceRetrofit.getnetService());
     private final LocationRepository mLocationRepository= new LocationRepository(locationClient);
     private final UserRepository mUserRepository = new UserRepository();
+    private final PermissionChecker mPermissionChecker = new PermissionChecker(MainApplication.getApplication());
 
     private ViewModelFactory() {
     }
@@ -41,7 +43,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ListRestViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new ListRestViewModel(mNetRepository, mLocationRepository, mUserRepository);
+            return (T) new ListRestViewModel(mNetRepository, mLocationRepository, mUserRepository, mPermissionChecker);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

@@ -24,13 +24,13 @@ public class LocationRepository {
     private static final int LOCATION_REQUEST_INTERVAL_MS = 10_000;
     private static final float SMALLEST_DISPLACEMENT_THRESHOLD_METER = 25;
 
-
-
     @NonNull
     private final FusedLocationProviderClient fusedLocationProviderClient;
 
     @NonNull
-    private final MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>(null);
+    private final MutableLiveData<String> locationMutableLiveData = new MutableLiveData<>(null);
+    @NonNull
+    private final MutableLiveData<Location> locationMutableLiveDatfft = new MutableLiveData<>(null);
 
     private LocationCallback callback;
 
@@ -38,8 +38,12 @@ public class LocationRepository {
         this.fusedLocationProviderClient = fusedLocationProviderClient;
     }
 
-    public LiveData<Location> getLocationLiveData() {
+    public LiveData<String> getLocationLiveData() {
         return locationMutableLiveData;
+    }
+
+    public LiveData<Location> getLocationLiveDatafft(){
+        return locationMutableLiveDatfft;
     }
 
     @RequiresPermission(anyOf = {"android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"})
@@ -49,8 +53,11 @@ public class LocationRepository {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     Location location = locationResult.getLastLocation();
+                        assert location != null;
+                        String h = location.getLatitude()+","+location.getLongitude();
 
-                    locationMutableLiveData.setValue(location);
+                    locationMutableLiveData.setValue(h);
+                    locationMutableLiveDatfft.setValue(location);
                 }
             };
         }
