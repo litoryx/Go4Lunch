@@ -2,17 +2,11 @@ package com.example.go4lunch.Net;
 
 import android.location.Location;
 import android.os.Looper;
-import android.widget.Toast;
 
-import com.example.go4lunch.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
@@ -23,6 +17,7 @@ public class LocationRepository {
 
     private static final int LOCATION_REQUEST_INTERVAL_MS = 10_000;
     private static final float SMALLEST_DISPLACEMENT_THRESHOLD_METER = 25;
+    Looper mLooper;
 
     @NonNull
     private final FusedLocationProviderClient fusedLocationProviderClient;
@@ -34,8 +29,9 @@ public class LocationRepository {
 
     private LocationCallback callback;
 
-    public LocationRepository(@NonNull FusedLocationProviderClient fusedLocationProviderClient) {
+    public LocationRepository(@NonNull FusedLocationProviderClient fusedLocationProviderClient, Looper looper) {
         this.fusedLocationProviderClient = fusedLocationProviderClient;
+        this.mLooper = looper;
     }
 
     public LiveData<String> getLocationLiveData() {

@@ -25,7 +25,6 @@ public class UserRepository {
     private static volatile UserRepository instance;
     private static final String COLLECTION_NAME = "user";
     List<User> usersSameRest;
-    List<Float> mListLocationFloatRest;
     Float mDistance;
     List<Restaurant> mListRestConvert;
 

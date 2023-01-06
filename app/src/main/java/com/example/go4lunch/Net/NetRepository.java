@@ -25,7 +25,6 @@ public class NetRepository {
         this.netService = netService;
     }
 
-
     public LiveData<List<Place>> fetchRestFollowing(String location){
 
         MutableLiveData<List<Place>> nearby = new MutableLiveData<>();

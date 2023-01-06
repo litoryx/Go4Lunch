@@ -3,15 +3,21 @@ package com.example.go4lunch.ListRest;
 import android.annotation.SuppressLint;
 import android.location.Location;
 
+import com.example.go4lunch.Geo.GeoViewState;
 import com.example.go4lunch.ListStaff.UserRepository;
 import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
+import com.example.go4lunch.autocomplete.Prediction;
 import com.example.go4lunch.models.PermissionChecker;
 import com.example.go4lunch.models.Restaurant;
+import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,7 +31,7 @@ public class ListRestViewModel extends ViewModel {
     LiveData<List<Restaurant>> viewState;
     LocationRepository mLocationRepository;
     PermissionChecker mPermissionChecker;
-
+    private final MediatorLiveData<List<Restaurant>> mGeoViewStateLiveData = new MediatorLiveData<>();
     LiveData<Location> locationLiveData;
     LiveData<String> locString;
     boolean hasGpsPermission;
@@ -51,6 +57,7 @@ public class ListRestViewModel extends ViewModel {
         viewState = Transformations.switchMap(mListCurrent, list ->
                 mUserRepository.createListRest(mListCurrent, locationLiveData));
 
+
     }
 
     public LiveData<String> getMessageList() {
@@ -64,7 +71,6 @@ public class ListRestViewModel extends ViewModel {
     @SuppressLint("MissingPermission")
     public void refresh() {
         hasGpsPermission = mPermissionChecker.hasLocationPermission();
-        mHasGpsPermissionLiveData.setValue(hasGpsPermission);
 
         if (hasGpsPermission) {
             mLocationRepository.startLocationRequest();

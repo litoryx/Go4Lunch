@@ -1,12 +1,15 @@
 package com.example.go4lunch.Geo;
 
+import android.annotation.SuppressLint;
 import android.location.Location;
+import android.util.Log;
 
 import com.example.go4lunch.ListStaff.UserRepository;
 import com.example.go4lunch.Net.LocationRepository;
 import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
 import com.example.go4lunch.autocomplete.Prediction;
+import com.example.go4lunch.models.PermissionChecker;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 
@@ -27,13 +30,16 @@ public class GeoViewModel extends ViewModel {
     LocationRepository mLocationRepository;
     UserRepository mUserRepository;
     AutoCompleteRepository mAutoCompleteRepository;
+    PermissionChecker mPermissionChecker;
+    Boolean hasGpsPermission = false;
     private final MediatorLiveData<List<GeoViewState>> mGeoViewStateLiveData = new MediatorLiveData<>();
 
-    public GeoViewModel(NetRepository netRepository, LocationRepository locationRepository, UserRepository userRepository, AutoCompleteRepository autoCompleteRepository) {
+    public GeoViewModel(NetRepository netRepository, LocationRepository locationRepository, UserRepository userRepository, AutoCompleteRepository autoCompleteRepository,PermissionChecker permissionChecker) {
         mNetRepository = netRepository;
         mLocationRepository = locationRepository;
         mUserRepository = userRepository;
         mAutoCompleteRepository = autoCompleteRepository;
+        mPermissionChecker = permissionChecker;
 
         LiveData<List<Prediction>> mListPredictionLiveData = autoCompleteRepository.getListPredictionLiveData();
 
@@ -63,9 +69,10 @@ public class GeoViewModel extends ViewModel {
         // différentes requêtes. On ne peut pas calculer le GeoViewState donc on stoppe l'exécution
         // de cette fonction en appellant "return"
         if (places == null || users == null) {
+            Log.d("GeoviewModel","places=null users=null");
             return;
         }
-
+        Log.d("GeoviewModel", places.size()+"");
         List<GeoViewState> mGeoList = new ArrayList<>();
 
         // On transforme les places en GeoViewState
@@ -77,9 +84,12 @@ public class GeoViewModel extends ViewModel {
                     hasRestaurantBeChosen
             );
             //Verifie si il est dans la liste Predictions
-            if(predictions == null){mGeoList.add(mGeoViewState);}else{
+            if(predictions == null){mGeoList.add(mGeoViewState);
+                Log.d("GeoviewModel", mGeoList.size()+" GeoViewState");
+            }else{
                 if(TrueorFalsePredictions(predictions, place.getPlace_id())){
                     mGeoList.add(mGeoViewState);
+                    Log.d("GeoviewModel", mGeoList.size()+" GeoViewState");
                 }
             }
         }
@@ -112,5 +122,14 @@ public class GeoViewModel extends ViewModel {
         return mGeoViewStateLiveData;
     }
 
+    @SuppressLint("MissingPermission")
+    public void refresh() {
+        hasGpsPermission = mPermissionChecker.hasLocationPermission();
 
+        if (hasGpsPermission) {
+            mLocationRepository.startLocationRequest();
+        } else {
+            mLocationRepository.stopLocationRequest();
+        }
+    }
 }

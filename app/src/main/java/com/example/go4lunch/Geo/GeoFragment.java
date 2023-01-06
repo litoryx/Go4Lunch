@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class GeoFragment extends Fragment implements
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
             for (GeoViewState viewState : geoViewState) {
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
-
+                Log.d("Coord", mCoord+"");
                 if(viewState.getUserCurrent() != null) {
                     map.addMarker(new MarkerOptions()
                             .position(mCoord));
@@ -97,9 +98,8 @@ public class GeoFragment extends Fragment implements
                             .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     }
                 }
-            map.setOnMarkerClickListener(this);
         });
-
+        map.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -122,5 +122,10 @@ public class GeoFragment extends Fragment implements
                 .show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        viewModel.refresh();
+    }
 }
