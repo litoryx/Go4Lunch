@@ -2,6 +2,7 @@ package com.example.go4lunch.ListRest;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
+import android.util.Log;
 
 import com.example.go4lunch.Geo.GeoViewState;
 import com.example.go4lunch.ListStaff.UserRepository;
@@ -28,7 +29,6 @@ public class ListRestViewModel extends ViewModel {
     NetRepository mNetRepository;
     UserRepository mUserRepository;
     LiveData<List<Place>> mListCurrent;
-    LiveData<List<Restaurant>> viewState;
     LocationRepository mLocationRepository;
     PermissionChecker mPermissionChecker;
     private final MediatorLiveData<List<Restaurant>> mGeoViewStateLiveData = new MediatorLiveData<>();
@@ -38,7 +38,7 @@ public class ListRestViewModel extends ViewModel {
 
     private final MediatorLiveData<String> mGpsMessageLiveData = new MediatorLiveData<>();
     private final MutableLiveData<Boolean> mHasGpsPermissionLiveData = new MutableLiveData<>();
-
+    private final MediatorLiveData<List<Restaurant>> viewstate = new MediatorLiveData<>();
 
     public ListRestViewModel(NetRepository netRepository, LocationRepository locationRepository,
                              UserRepository userRepository, PermissionChecker permissionChecker) {
@@ -50,14 +50,26 @@ public class ListRestViewModel extends ViewModel {
         refresh();
         locationLiveData = locationRepository.getLocationLiveDatafft();
         locString = locationRepository.getLocationLiveData();
+        LiveData<List<User>> usersLivedata = userRepository.getUserData();
 
         mListCurrent = Transformations.switchMap(locString, location ->
                 mNetRepository.fetchRestFollowing(location));
 
-        viewState = Transformations.switchMap(mListCurrent, list ->
-                mUserRepository.createListRest(mListCurrent, locationLiveData));
+        viewstate.addSource(mListCurrent, places -> {
+            combine(places, usersLivedata.getValue());
+        });
 
+        viewstate.addSource(usersLivedata, users -> {
+            combine(mListCurrent.getValue(), users);
+        });
 
+    }
+
+    public void combine(List<Place> places, List<User> users){
+        if(places == null || users == null){return;}
+        List<Restaurant> rest = mUserRepository.createListRest(places, locationLiveData.getValue(), users);
+
+        viewstate.setValue(rest);
     }
 
     public LiveData<String> getMessageList() {
@@ -65,7 +77,7 @@ public class ListRestViewModel extends ViewModel {
     }
 
     public LiveData<List<Restaurant>> getListRest() {
-        return viewState;
+        return viewstate;
     }
 
     @SuppressLint("MissingPermission")

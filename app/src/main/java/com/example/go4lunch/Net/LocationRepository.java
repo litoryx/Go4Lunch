@@ -66,7 +66,7 @@ public class LocationRepository {
                         .setSmallestDisplacement(SMALLEST_DISPLACEMENT_THRESHOLD_METER)
                         .setInterval(LOCATION_REQUEST_INTERVAL_MS),
                 callback,
-                Looper.getMainLooper()
+                mLooper
         );
     }
 

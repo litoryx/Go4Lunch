@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.example.go4lunch.Geo.GeoFragment;
 import com.example.go4lunch.ListRest.ListRestFragment;
 import com.example.go4lunch.ListStaff.ListStaffFragment;
+import com.example.go4lunch.ListStaff.StaffViewModel;
 import com.example.go4lunch.ListStaff.UserRepository;
+import com.example.go4lunch.ListStaff.UserViewModelFactory;
 import com.example.go4lunch.objetGoogle.Place;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,14 +40,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     Toolbar mToolbar;
     BottomNavigationView mBottomNavigationView;
     DrawerLayout mDrawerLayout;
+    FloatingActionButton mFloatingActionButton;
     NavigationView mNavigationView;
     UserRepository mUserRepository;
+    MainViewModel mMainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         mToolbar = findViewById(R.id.activity_toolbar);
         mBottomNavigationView = findViewById(R.id.bottom_navigation);
+        mFloatingActionButton = findViewById(R.id.center_buttonMap);
         SearchView simpleSearchView = (SearchView) findViewById ( R . id . simpleSearchView );
+        mMainViewModel = new ViewModelProvider(this, MainViewModelFactory.getInstance()).get(MainViewModel.class);
         setSupportActionBar(mToolbar);
-        mUserRepository = new UserRepository();
+        mUserRepository = UserRepository.getInstance();
         this.configureDrawerLayout();
         this.configureNavigationView();
         setup();
@@ -76,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText != null){mMainViewModel.updateSearchText(newText);
+                    return true;}
 
                 return false;
             }

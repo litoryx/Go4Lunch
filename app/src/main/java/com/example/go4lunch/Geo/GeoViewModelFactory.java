@@ -36,7 +36,7 @@ public class GeoViewModelFactory implements ViewModelProvider.Factory {
     FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MainApplication.getApplication());
     private final NetRepository catFactsRepository = new NetRepository(NetServiceRetrofit.getCatApi());
     private final LocationRepository mLocationRepository = new LocationRepository(locationClient, mLooper);
-    private final UserRepository mUserRepository = new UserRepository();
+    private final UserRepository mUserRepository = UserRepository.getInstance();
     private final PermissionChecker mPermissionChecker = new PermissionChecker(MainApplication.getApplication());
     private final AutoCompleteRepository mAutoCompleteRepository = AutoCompleteRepository.getInstance();
 

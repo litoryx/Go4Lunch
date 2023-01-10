@@ -43,7 +43,6 @@ public class MainViewModel extends ViewModel {
         if(location != null) {
             mAutoCompleteRepository.updateSearch(text, location);
 
-
         }
     }
 

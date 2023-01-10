@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -26,9 +27,12 @@ public class UserRepository {
     private static final String COLLECTION_NAME = "user";
     List<User> usersSameRest;
     Float mDistance;
-    List<Restaurant> mListRestConvert;
+    FirebaseFirestore mFirebaseFirestore;
 
-    public UserRepository() { }
+
+    public UserRepository(FirebaseFirestore firebaseFirestore) {
+        this.mFirebaseFirestore = firebaseFirestore;
+    }
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
@@ -37,7 +41,7 @@ public class UserRepository {
         }
         synchronized(UserRepository.class) {
             if (instance == null) {
-                instance = new UserRepository();
+                instance = new UserRepository(FirebaseFirestore.getInstance());
             }
             return instance;
         }
@@ -49,7 +53,7 @@ public class UserRepository {
     }
 
     private CollectionReference getUsersCollection(){
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+        return mFirebaseFirestore.collection(COLLECTION_NAME);
     }
 
     // Get User Data from Firestore
@@ -59,6 +63,8 @@ public class UserRepository {
         getUsersCollection().get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<User> users = task.getResult().toObjects(User.class);
+                //Est-ce qu'une collection peut être dans un objet "RestFavoris" ?
+                //L'erreur est la ligne 67, il manque un objet RestFavoris, qui est dans Firestore.
                 userLiveData.setValue(users);
             } else {
                 Log.d("TAG", "Error getting documents: ", task.getException());
@@ -70,19 +76,19 @@ public class UserRepository {
     // Update User Username
     public void addUser(FirebaseUser user) {
 
-        List<User> listUser = getUserData().getValue();
 
-        if(listUser != null) {
-            for (User used : listUser) {
-                if (!used.getMail().equals(user.getEmail())) {
-                    getUsersCollection().document(user.getUid())
-                        .set(user)
+                    User userNew = new User(user.getUid(),user.getDisplayName(),null,user.getEmail(),null);
+                    String restDefault = "restDefault";
+
+                    getUsersCollection().document(userNew.getUid())
+                        .set(userNew)
                         .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
-                        .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));}
+                        .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
 
-            }
-        }
-
+        getUsersCollection().document(userNew.getUid()).collection("RestFavoris").document()
+                .set(restDefault)
+                .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
     }
     //Permettra d'ajouter au clique dans une liste Place ou pas FireStore ? un Array peut-être ?
     public void updateUserRestFavoris(RestaurantDetailViewState place){
@@ -138,18 +144,17 @@ public class UserRepository {
                 "&key="+ BuildConfig.MAPS_API_KEY;
     }
 
-    public LiveData<RestaurantDetailViewState> createPlaceToRestaurantDetail(LiveData<Place> mPlace){
-        Place place = mPlace.getValue();
+    public LiveData<RestaurantDetailViewState> createPlaceToRestaurantDetail(Place mPlace){
         MutableLiveData<RestaurantDetailViewState> restDetailLiveData = new MutableLiveData<>();
-        List<User> mListUserCurrent = getUserSameRest(place).getValue();
+        List<User> mListUserCurrent = getUserSameRest(mPlace).getValue();
         String restCurrent = getUserRest().getValue();
         List<String> listFav = getListRestFavoris().getValue();
         boolean Fav = false;
 
         if(listFav != null) {
             for (String namePlace : listFav) {
-                if (place != null) {
-                    if (place.getName().equals(namePlace)) {
+                if (mPlace != null) {
+                    if (mPlace.getName().equals(namePlace)) {
                         Fav = true;
                     }
                 }
@@ -158,13 +163,13 @@ public class UserRepository {
 
         RestaurantDetailViewState detailViewState = new RestaurantDetailViewState();
 
-        if(place != null) {
-            detailViewState.setName(place.getName());
-            detailViewState.setAdr_address(place.getAdr_address());
-            detailViewState.setUrl(place.getUrl());
-            detailViewState.setPhoto(photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference()));
-            detailViewState.setFormatted_phone_number(place.getFormatted_phone_number());
-            detailViewState.setPlace_id(place.getPlace_id());
+        if(mPlace != null) {
+            detailViewState.setName(mPlace.getName());
+            detailViewState.setAdr_address(mPlace.getAdr_address());
+            detailViewState.setUrl(mPlace.getUrl());
+            detailViewState.setPhoto(photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()));
+            detailViewState.setFormatted_phone_number(mPlace.getFormatted_phone_number());
+            detailViewState.setPlace_id(mPlace.getPlace_id());
             detailViewState.setUserCurrentRest(mListUserCurrent);
             detailViewState.setRestCurrent(restCurrent);
             detailViewState.setFav(Fav);
@@ -174,54 +179,61 @@ public class UserRepository {
         return restDetailLiveData;
     }
 
-    public LiveData<List<Restaurant>> createListRest(LiveData<List<Place>> places, LiveData<Location> locationLiveData){
-        List<Place> mListRestCurrent = places.getValue();
-        LiveData<List<Integer>> mListCountCurrent = CountUserSameRest(mListRestCurrent);
+    public List<Restaurant> createListRest(List<Place> places, Location locationLiveData, List<User> users){
+        List<Integer> mListCountCurrent = CountUserSameRest(places, users);
         List<Float> mListDistancesCurrent = createListDistancesRestUser(places, locationLiveData);
         Restaurant restModel = null;
+        List<Restaurant> mListRestConvert = new ArrayList<>();
 
-        MutableLiveData<List<Restaurant>> mListRestLiveData = new MutableLiveData<>();
         int i = 0;
+        String url = null;
 
-        if (mListRestCurrent != null) {
-            for (Place place:mListRestCurrent){
-                String url = photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference());
-                if (mListCountCurrent.getValue() != null) {
+        if (places != null) {
+            Log.d("error","Places existent");
+            for (Place place: places){
+                if(!place.getPhotos().isEmpty()){url = photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference());}
+
+                if (mListCountCurrent != null) {
+                    Log.d("error","mListCountCurrent existent");
                     if (mListDistancesCurrent != null) {
+                        Log.d("error","mListDistancesCurrent existent");
                         restModel = new Restaurant(place.getName(),
                                 place.getUrl(), place.getFormatted_phone_number(), place.getOpening_hours(),
                                 place.getAdr_address(),
                                 place.getPlace_id(),
                                 url,
-                                mListCountCurrent.getValue().get(i),
+                                mListCountCurrent.get(i),
                                 mListDistancesCurrent.get(i));
                     }
+
+                    if(restModel != null){Log.d("error","Finis créer Restaurant");}else{Log.d("error","Pas resto");}
+
                 }
                 mListRestConvert.add(restModel);
+                Log.d("error","Aj restaurants liste"+mListRestConvert.get(i).getName());
                 i++;
             }
         }
-        mListRestLiveData.setValue(mListRestConvert);
-        return mListRestLiveData;
+        Log.d("error","retourne liste");
+        return mListRestConvert;
     }
 
 
 
-    public List<Float> createListDistancesRestUser(LiveData<List<Place>> places, LiveData<Location> locationLiveData){
+    public List<Float> createListDistancesRestUser(List<Place> places, Location locationLiveData){
         List<Float> restDistLiveData = new ArrayList<>();
-        if (places.getValue() != null) {
-            int mSize = places.getValue().size();
+        if (places != null) {
+            int mSize = places.size();
 
             for (int i = 0; i < mSize; i++) {
-                Double mLat = places.getValue().get(i).getGeometry().getLatLngLiteral().getLat();
-                Double mLng = places.getValue().get(i).getGeometry().getLatLngLiteral().getLng();
+                Double mLat = places.get(i).getGeometry().getLatLngLiteral().getLat();
+                Double mLng = places.get(i).getGeometry().getLatLngLiteral().getLng();
                 Location locationR = new Location("Rest" + i);
-                Location currentLocation = locationLiveData.getValue();
 
                 locationR.setLongitude(mLng);
                 locationR.setLatitude(mLat);
-                if (currentLocation != null) {
-                    mDistance = currentLocation.distanceTo(locationR);
+                if (locationLiveData != null) {
+                    mDistance = locationLiveData.distanceTo(locationR);
                 }
                 restDistLiveData.add(mDistance);
             }
@@ -254,29 +266,21 @@ public class UserRepository {
 
     //Compte le nombre d'utilisateur dans le même restaurant à faire évoluer pour une liste Place qui
     // retourne listInteger lié à ListRestViewModel
-    public LiveData<List<Integer>> CountUserSameRest(List<Place> places){
-        MutableLiveData<List<Integer>> userCountSameRestLiveData = new MutableLiveData<>();
+    public List<Integer> CountUserSameRest(List<Place> places, List<User> users) {
+        List<Integer> ListI = new ArrayList<>();
+        int i = 0;
 
-        getUsersCollection().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<Integer> ListI = new ArrayList<>();
-                int i = 0;
-                List<User> users = task.getResult().toObjects(User.class);
-                for (User usersList:users) {
-                    for (Place place:places) {
-                        if (usersList.getRestaurantChoose() != null) {
-                            if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
-                                i++;
-                            }
-                        }
-                        ListI.add(i);
+        for (User usersList : users) {
+            for (Place place : places) {
+                if (usersList.getRestaurantChoose() != null) {
+                    if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
+                        i++;
                     }
                 }
-                userCountSameRestLiveData.setValue(ListI);
-            } else {
-                Log.d("TAG", "Error getting documents: ", task.getException());
+                ListI.add(i);
             }
-        });
-        return userCountSameRestLiveData;
+        }
+
+        return ListI;
     }
 }

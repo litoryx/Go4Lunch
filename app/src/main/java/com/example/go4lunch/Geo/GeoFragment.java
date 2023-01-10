@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.go4lunch.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,6 +25,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +42,7 @@ public class GeoFragment extends Fragment implements
 
     GeoViewModel viewModel;
     GoogleMap map;
+    FloatingActionButton mFloatingActionButton;
     View view;
     int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean permissionDenied = false;
@@ -67,9 +72,12 @@ public class GeoFragment extends Fragment implements
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_geo, container, false);
 
+        mFloatingActionButton = view.findViewById(R.id.center_buttonMap);
+
         viewModel = new ViewModelProvider(this, GeoViewModelFactory.getInstance()).get(GeoViewModel.class);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         assert mapFragment != null;
         mapFragment.getMapAsync( this);
         return view;
@@ -86,20 +94,25 @@ public class GeoFragment extends Fragment implements
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
+            LatLng mCoord = null;
             for (GeoViewState viewState : geoViewState) {
-                LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
+                mCoord = new LatLng(viewState.getLat(), viewState.getLng());
                 Log.d("Coord", mCoord+"");
-                if(viewState.getUserCurrent() != null) {
+
                     map.addMarker(new MarkerOptions()
                             .position(mCoord));
 
-                    } else {
                     map.addMarker(new MarkerOptions()
                             .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    }
+
                 }
+            LatLng finalMCoord = mCoord;
+            mFloatingActionButton.setOnClickListener(view -> {
+                map.moveCamera(CameraUpdateFactory.newLatLng(finalMCoord));
+            });
         });
         map.setOnMarkerClickListener(this);
+
     }
 
     @Override

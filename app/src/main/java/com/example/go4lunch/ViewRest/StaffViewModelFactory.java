@@ -25,7 +25,7 @@ public class StaffViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private final NetRepository mNetRepository = new NetRepository(NetServiceRetrofit.getnetStaffService());
-    private final UserRepository mUserRepository = new UserRepository();
+    private final UserRepository mUserRepository = UserRepository.getInstance();
 
     private StaffViewModelFactory() {
     }

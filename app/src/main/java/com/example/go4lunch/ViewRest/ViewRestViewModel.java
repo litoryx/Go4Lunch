@@ -33,7 +33,7 @@ public class ViewRestViewModel extends ViewModel {
 
         mCurrent = mNetRepository.fetchRestDetailFollowing(place.getPlace_id());
 
-        mCurrentListRest = mUserRepository.createPlaceToRestaurantDetail(mCurrent);
+        mCurrentListRest = mUserRepository.createPlaceToRestaurantDetail(mCurrent.getValue());
 
         return mCurrentListRest;}
 

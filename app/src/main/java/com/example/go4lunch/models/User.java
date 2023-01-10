@@ -1,5 +1,7 @@
 package com.example.go4lunch.models;
 
+import java.util.List;
+
 import androidx.annotation.Nullable;
 
 public class User {
@@ -9,6 +11,7 @@ public class User {
     private String username;
     private RestaurantChoose restaurantChoose;
     private String mail;
+    private List<String> mListFav;
 
     public String getMail() {
         return mail;
@@ -20,11 +23,16 @@ public class User {
 
     public User() { }
 
-    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail) {
+    public List<String> getListFav() {
+        return mListFav;
+    }
+
+    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail, List<String> listFav) {
         this.uid = uid;
         this.username = username;
         this.restaurantChoose = restaurantChoose;
         this.mail = mail;
+        this.mListFav = listFav;
     }
 
     public String getUid() {

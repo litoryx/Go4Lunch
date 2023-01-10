@@ -1,5 +1,7 @@
 package com.example.go4lunch.ListStaff;
 
+import android.os.Looper;
+
 import com.example.go4lunch.ListRest.ViewModelFactory;
 import com.example.go4lunch.MainApplication;
 import com.example.go4lunch.Net.LocationRepository;
@@ -17,6 +19,7 @@ public class UserViewModelFactory implements ViewModelProvider.Factory {
 
     private static UserViewModelFactory factory;
     MainApplication mMainApplication;
+    Looper mLooper;
 
     public static UserViewModelFactory getInstance() {
         if (factory == null) {
@@ -30,7 +33,7 @@ public class UserViewModelFactory implements ViewModelProvider.Factory {
     }
 
     FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MainApplication.getApplication());
-    private final UserRepository mUserRepository = new UserRepository();
+    private final UserRepository mUserRepository = UserRepository.getInstance();
     private final NetRepository mNetRepository = new NetRepository(NetServiceRetrofit.getnetService());
     private final LocationRepository mLocationRepository = new LocationRepository(locationClient, mLooper);
     private final PermissionChecker mPermissionChecker = new PermissionChecker(mMainApplication);
