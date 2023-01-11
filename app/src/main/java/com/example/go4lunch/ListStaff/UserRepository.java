@@ -21,6 +21,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import kotlin.jvm.internal.CollectionToArray;
 
 public class UserRepository {
     private static volatile UserRepository instance;
@@ -75,7 +76,6 @@ public class UserRepository {
 
     // Update User Username
     public void addUser(FirebaseUser user) {
-
 
                     User userNew = new User(user.getUid(),user.getDisplayName(),null,user.getEmail(),null);
                     String restDefault = "restDefault";

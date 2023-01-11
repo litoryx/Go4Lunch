@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 
 public class User {
 
-
     private String uid;
     private String username;
     private RestaurantChoose restaurantChoose;

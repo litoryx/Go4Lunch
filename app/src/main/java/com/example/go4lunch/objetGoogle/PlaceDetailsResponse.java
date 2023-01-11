@@ -1,10 +1,13 @@
 package com.example.go4lunch.objetGoogle;
 
-import java.util.List;
 
 public class PlaceDetailsResponse {
 
     Place result;
+
+    public PlaceDetailsResponse(Place result) {
+        this.result = result;
+    }
 
     public Place getStaff() {
         return result;

@@ -22,7 +22,7 @@ public class Place implements Parcelable {
         return photos;
     }
 
-    protected Place(Parcel in) {
+    public Place(Parcel in) {
         name = in.readString();
         adr_address = in.readString();
         url = in.readString();
