@@ -1,17 +1,22 @@
 package com.example.go4lunch.ListRest;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.ListStaff.ListStaffRecyclerViewAdapter;
 import com.example.go4lunch.R;
 import com.example.go4lunch.ViewRest.ViewRestActivity;
 import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.models.User;
+import com.example.go4lunch.objetGoogle.AddressComponent;
 import com.example.go4lunch.objetGoogle.Place;
+import com.example.go4lunch.objetGoogle.PlaceOpeningHours;
 import com.example.go4lunch.objetGoogle.PlaceOpeningHoursPeriod;
 
 import java.util.List;
@@ -22,11 +27,10 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static androidx.core.content.ContextCompat.getColor;
 import static androidx.core.content.ContextCompat.startActivity;
 
 public class ListRestRecyclerViewAdapter extends ListAdapter<Restaurant, ListRestRecyclerViewAdapter.ViewHolder> {
-
-    List<Restaurant> mList;
 
     public ListRestRecyclerViewAdapter(){
         super(new ItemCallback());
@@ -54,6 +58,7 @@ public class ListRestRecyclerViewAdapter extends ListAdapter<Restaurant, ListRes
         public TextView mDistance;
         public TextView mWorkmates;
         public ConstraintLayout mRest;
+        public ImageView mPhtoRest;
 
         public ViewHolder(View view) {
             super(view);
@@ -63,25 +68,40 @@ public class ListRestRecyclerViewAdapter extends ListAdapter<Restaurant, ListRes
             mDistance = view.findViewById(R.id.distance);
             mWorkmates = view.findViewById(R.id.workmates_number);
             mRest = view.findViewById(R.id.rest);
+            mPhtoRest = view.findViewById(R.id.imageView);
         }
 
         public void bind(Restaurant restaurant) {
+
             int numberUserInSameRest = restaurant.getNumbers_user_rest();
             Float numberMetersDistance = restaurant.getDistanceRest();
-            String stNumberMetersDistance = numberMetersDistance+"m";
+            int b = Math.round(numberMetersDistance);
+            String stNumberMetersDistance = b+"m";
             String stNumberUserInSameRest = "("+numberUserInSameRest+")";
-            List<PlaceOpeningHoursPeriod> opHours = restaurant.getOpening_hours().getPeriods();
+            PlaceOpeningHours opHours = restaurant.getOpening_hours();
             String adr_address = restaurant.getAdr_address();
             String name = restaurant.getName();
+            String time = null;
+            Number day = null;
 
+            if(adr_address != null){mAdrRest.setText(adr_address);}else{
+                mAdrRest.setText("Pas d'adresse"); }
             mDistance.setText(stNumberMetersDistance);
             mWorkmates.setText(stNumberUserInSameRest);
             mNameRest.setText(name);
             if(opHours != null) {
-                String time = opHours.get(0).getPlaceOpeningHoursPeriodDetail().getTime();
-                mOpen_horary.setText(time);
-            }
-            mAdrRest.setText(adr_address);
+                List<PlaceOpeningHoursPeriod> openingHoursPeriods = opHours.getPeriods();
+                if(openingHoursPeriods != null){
+                    //Liste open et close la liste close n'est pas required openingHoursPeriods.get(0)
+                    day = openingHoursPeriods.get(0).getPlaceOpeningHoursPeriodDetail().getDay();
+                    time = openingHoursPeriods.get(0).getPlaceOpeningHoursPeriodDetail().getTime();}
+                String result = day+" "+time;
+                mOpen_horary.setText(result);
+                Log.d("horaire","Horaire modifié");
+            }else{mOpen_horary.setText("wtf");
+                Log.d("horaire","Horaire null");}
+
+            Glide.with(mPhtoRest.getContext()).load(restaurant.getPhoto()).into(mPhtoRest);
 
             mRest.setOnClickListener(view -> {
                 Intent activityIntent = new Intent(view.getContext(), ViewRestActivity.class);

@@ -19,8 +19,12 @@ import com.example.go4lunch.models.RestaurantDetailViewState;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ViewRestActivity extends AppCompatActivity {
 

@@ -8,7 +8,7 @@ public class PlaceOpeningHoursPeriodDetail {
     boolean truncated;
 
     public Number getDay() {
-        return day;
+        if(day != null){return day;}else{return null;}
     }
 
     public String getDate() {

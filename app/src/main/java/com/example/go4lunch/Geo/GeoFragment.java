@@ -94,9 +94,8 @@ public class GeoFragment extends Fragment implements
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
-            LatLng mCoord = null;
             for (GeoViewState viewState : geoViewState) {
-                mCoord = new LatLng(viewState.getLat(), viewState.getLng());
+                LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
                 Log.d("Coord", mCoord+"");
 
                     map.addMarker(new MarkerOptions()
@@ -106,10 +105,16 @@ public class GeoFragment extends Fragment implements
                             .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
                 }
-            LatLng finalMCoord = mCoord;
-            mFloatingActionButton.setOnClickListener(view -> {
+        });
+        mFloatingActionButton.setOnClickListener(view -> {
+
+            Location loc = viewModel.getUserLocation();
+
+            if(loc != null) {
+                LatLng finalMCoord = new LatLng(loc.getLatitude(), loc.getLongitude());
                 map.moveCamera(CameraUpdateFactory.newLatLng(finalMCoord));
-            });
+            }
+
         });
         map.setOnMarkerClickListener(this);
 

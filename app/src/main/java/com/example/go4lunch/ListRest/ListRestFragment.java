@@ -31,7 +31,7 @@ public class ListRestFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     ListRestViewModel mListRestViewModel;
-    private ListRestRecyclerViewAdapter mListRest = new ListRestRecyclerViewAdapter();
+    private final ListRestRecyclerViewAdapter mListRest = new ListRestRecyclerViewAdapter();
 
     public ListRestFragment() {
         // Required empty public constructor
@@ -56,11 +56,13 @@ public class ListRestFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(mListRest);
         // Inflate the layout for this fragment
 
         mListRestViewModel.getListRest().observe(getViewLifecycleOwner(), list-> {
                 mListRest.submitList(list);
                 mListRest.notifyDataSetChanged();
+
         });
 
         ActivityCompat.requestPermissions(

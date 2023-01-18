@@ -33,6 +33,8 @@ public class GeoViewModel extends ViewModel {
     PermissionChecker mPermissionChecker;
     Boolean hasGpsPermission = false;
     private final MediatorLiveData<List<GeoViewState>> mGeoViewStateLiveData = new MediatorLiveData<>();
+    LiveData<String> locationLiveData;
+    LiveData<Location> locationLiveDataLoc;
 
     public GeoViewModel(NetRepository netRepository, LocationRepository locationRepository, UserRepository userRepository, AutoCompleteRepository autoCompleteRepository,PermissionChecker permissionChecker) {
         mNetRepository = netRepository;
@@ -44,7 +46,8 @@ public class GeoViewModel extends ViewModel {
         LiveData<List<Prediction>> mListPredictionLiveData = autoCompleteRepository.getListPredictionLiveData();
 
 
-        LiveData<String> locationLiveData = locationRepository.getLocationLiveData();
+        locationLiveData = locationRepository.getLocationLiveData();
+        locationLiveDataLoc = locationRepository.getLocationLiveDatafft();
 
         LiveData<List<Place>> nearbyPlacesLivedata = Transformations.switchMap(locationLiveData, location ->
                     mNetRepository.fetchRestFollowing(location));
@@ -64,7 +67,7 @@ public class GeoViewModel extends ViewModel {
         );
     }
 
-    public void combine(@Nullable List<Place> places, @Nullable List<User> users, @Nullable List<Prediction> predictions) {
+    private void combine(@Nullable List<Place> places, @Nullable List<User> users, @Nullable List<Prediction> predictions) {
         // Si places ou users est null, cela veut dire qu'on a pas encore reçu la réponse à nos
         // différentes requêtes. On ne peut pas calculer le GeoViewState donc on stoppe l'exécution
         // de cette fonction en appellant "return"
@@ -120,6 +123,12 @@ public class GeoViewModel extends ViewModel {
     // This is the "final product" of our ViewModel : every data needed from the view is in this LiveData
     public LiveData<List<GeoViewState>> getViewStateLiveData() {
         return mGeoViewStateLiveData;
+    }
+
+    @Nullable
+    public Location getUserLocation(){
+
+        return locationLiveDataLoc.getValue();
     }
 
     @SuppressLint("MissingPermission")

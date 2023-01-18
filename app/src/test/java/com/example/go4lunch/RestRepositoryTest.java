@@ -55,9 +55,7 @@ public class RestRepositoryTest {
         when(mNetService.getFollowing(any(),anyInt(),any(),any())).thenReturn(call);
         when(response.body()).thenReturn(createNearbySearchResponse());
 
-        LiveData<List<Place>> restaurantsLivedata = mNetRepository.fetchRestFollowing(
-                "0.0, 1.0"
-        );
+        LiveData<List<Place>> restaurantsLivedata = mNetRepository.fetchRestFollowing("0.0, 1.0");
 
         verify(call).enqueue(argumentCaptor.capture());
         Callback<PlacesNearbySearchResponse> callback = argumentCaptor.getValue();

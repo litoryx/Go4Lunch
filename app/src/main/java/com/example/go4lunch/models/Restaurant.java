@@ -3,6 +3,7 @@ package com.example.go4lunch.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.go4lunch.objetGoogle.AddressComponent;
 import com.example.go4lunch.objetGoogle.Geometry;
 import com.example.go4lunch.objetGoogle.PlaceOpeningHours;
 import com.example.go4lunch.objetGoogle.PlacePhoto;
@@ -15,7 +16,7 @@ public class Restaurant implements Parcelable {
     String url;
     String formatted_phone_number;
     PlaceOpeningHours opening_hours;
-    String adr_address;
+    String formatted_address;
     String place_id;
     String photo;
     Integer numbers_user_rest;
@@ -29,7 +30,7 @@ public class Restaurant implements Parcelable {
         this.url = url;
         this.formatted_phone_number = formatted_phone_number;
         this.opening_hours = opening_hours;
-        this.adr_address = adr_address;
+        this.formatted_address = adr_address;
         this.place_id = place_id;
         this.photo = photo;
         this.numbers_user_rest = numbers_user_rest;
@@ -40,7 +41,6 @@ public class Restaurant implements Parcelable {
         name = in.readString();
         url = in.readString();
         formatted_phone_number = in.readString();
-        adr_address = in.readString();
         place_id = in.readString();
         photo = in.readString();
         numbers_user_rest = in.readInt();
@@ -100,7 +100,7 @@ public class Restaurant implements Parcelable {
     }
 
     public PlaceOpeningHours getOpening_hours() {
-        return opening_hours;
+        if(opening_hours != null){return opening_hours;}else{return null;}
     }
 
     public void setOpening_hours(PlaceOpeningHours opening_hours) {
@@ -108,11 +108,11 @@ public class Restaurant implements Parcelable {
     }
 
     public String getAdr_address() {
-        return adr_address;
+        if(formatted_address != null){return formatted_address;}else{return null;}
     }
 
     public void setAdr_address(String adr_address) {
-        this.adr_address = adr_address;
+        this.formatted_address = adr_address;
     }
 
     public String getPlace_id() {
@@ -141,7 +141,6 @@ public class Restaurant implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(url);
         parcel.writeString(formatted_phone_number);
-        parcel.writeString(adr_address);
         parcel.writeString(place_id);
         parcel.writeString(photo);
         if (numbers_user_rest == null) {

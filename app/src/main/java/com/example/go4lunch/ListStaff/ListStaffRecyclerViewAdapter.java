@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.ListRest.ListRestRecyclerViewAdapter;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.User;
@@ -44,12 +46,14 @@ public class ListStaffRecyclerViewAdapter extends ListAdapter<User, ListStaffRec
         public TextView mUsername;
         public TextView mStyleR;
         public TextView mResto;
+        public ImageView circleImageView;
 
         public ViewHolder(View view) {
             super(view);
             mUsername = view.findViewById(R.id.username);
             mStyleR = view.findViewById(R.id.styleR);
             mResto = view.findViewById(R.id.resto);
+            circleImageView = view.findViewById(R.id.circleImageView);
         }
 
         public void bind(User user) {
@@ -62,10 +66,8 @@ public class ListStaffRecyclerViewAdapter extends ListAdapter<User, ListStaffRec
 
                 mStyleR.setText(styleR);
                 mResto.setText(resto);
+                Glide.with(circleImageView.getContext()).load("https://firebasestorage.googleapis.com/v0/b/go4lucnch.appspot.com/o/restaurant.jpg?alt=media&token=257934b8-7d69-4d20-80d4-40a58df39a9c").into(circleImageView);
             }
-
-
-
         }
     }
 

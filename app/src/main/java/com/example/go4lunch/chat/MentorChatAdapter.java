@@ -4,6 +4,8 @@ import android.os.UserManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
+import com.example.go4lunch.ListStaff.UserRepository;
 import com.example.go4lunch.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -33,7 +35,7 @@ public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, Message
     @Override
     public int getItemViewType(int position) {
         // Determine the type of the message by if the user is the sender or not
-        String currentUserId = UserManager.getInstance().getCurrentUser().getUid();
+        String currentUserId = UserRepository.getInstance().getCurrentUser().getUid();
         boolean isSender = getItem(position).getUserSender().getUid().equals(currentUserId);
 
         return (isSender) ? SENDER_TYPE : RECEIVER_TYPE;

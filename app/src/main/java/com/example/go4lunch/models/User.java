@@ -11,6 +11,28 @@ public class User {
     private RestaurantChoose restaurantChoose;
     private String mail;
     private List<String> mListFav;
+    private String urlPicture;
+    private boolean isMentor;
+
+    public boolean getIsMentor() {
+        return isMentor;
+    }
+
+    public void setMentor(boolean mentor) {
+        isMentor = mentor;
+    }
+
+    public void setListFav(List<String> listFav) {
+        mListFav = listFav;
+    }
+
+    public String getUrlPicture() {
+        return urlPicture;
+    }
+
+    public void setUrlPicture(String urlPicture) {
+        this.urlPicture = urlPicture;
+    }
 
     public String getMail() {
         return mail;
@@ -26,12 +48,13 @@ public class User {
         return mListFav;
     }
 
-    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail, List<String> listFav) {
+    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail, List<String> listFav, String urlPicture) {
         this.uid = uid;
         this.username = username;
         this.restaurantChoose = restaurantChoose;
         this.mail = mail;
         this.mListFav = listFav;
+        this.urlPicture = urlPicture;
     }
 
     public String getUid() {

@@ -9,4 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#f7a838</color>
     <color name="green">#00a000</color>
+    <color name="colorPrimary">#039BE5</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorAccent">#FFA000</color>
+    <color name="colorError">#FF5252</color>
+
+    <color name="colorGreen">#6BB18C</color>
+    <color name="colorSandLight">#ECDAAF</color>
+    <color name="colorSand">#EBCB94</color>
 </resources>

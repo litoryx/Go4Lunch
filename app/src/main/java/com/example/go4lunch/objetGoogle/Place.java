@@ -2,6 +2,7 @@ package com.example.go4lunch.objetGoogle;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class Place implements Parcelable {
     String url;
     String formatted_phone_number;
     PlaceOpeningHours opening_hours;
-    String adr_address;
+    String formatted_address;
     String place_id;
     List<PlacePhoto> photos;
 
@@ -24,8 +25,8 @@ public class Place implements Parcelable {
 
     public Place(Parcel in) {
         name = in.readString();
-        adr_address = in.readString();
         url = in.readString();
+        formatted_address = in.readString();
         formatted_phone_number = in.readString();
         place_id = in.readString();
     }
@@ -57,7 +58,7 @@ public class Place implements Parcelable {
     }
 
     public String getAdr_address() {
-        return adr_address;
+        return formatted_address;
     }
 
     public String getUrl() {
@@ -86,8 +87,8 @@ public class Place implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
-        parcel.writeString(adr_address);
         parcel.writeString(url);
+        parcel.writeString(formatted_address);
         parcel.writeString(formatted_phone_number);
         parcel.writeString(place_id);
     }

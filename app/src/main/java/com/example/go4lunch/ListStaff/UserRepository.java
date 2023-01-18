@@ -1,6 +1,7 @@
 package com.example.go4lunch.ListStaff;
 
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
 import com.example.go4lunch.BuildConfig;
@@ -13,10 +14,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -74,10 +80,32 @@ public class UserRepository {
         return userLiveData;
     }
 
+    public UploadTask uploadImage(Uri imageUri){
+        String uuid = UUID.randomUUID().toString(); // GENERATE UNIQUE STRING
+        StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
+        return mImageRef.putFile(imageUri);
+    }
+
+    public void createImageFireStorageOnFireStore(String urlImage){
+            List<User> users = getUserData().getValue();
+            // Creating Message with the URL image
+            // Storing Message on Firestore
+        if(users != null) {
+            for (User user : users) {
+                User userNew = new User(user.getUid(),user.getUsername(),null,user.getMail(),null, urlImage);
+                getUsersCollection().document(user.getUid())
+                        .set(userNew);
+            }
+        }
+    }
+
     // Update User Username
     public void addUser(FirebaseUser user) {
+        String photoUrl = null;
+        Uri url = user.getPhotoUrl();
 
-                    User userNew = new User(user.getUid(),user.getDisplayName(),null,user.getEmail(),null);
+        if(url != null){photoUrl = url.toString();}
+                    User userNew = new User(user.getUid(),user.getDisplayName(),null,user.getEmail(),null, photoUrl);
                     String restDefault = "restDefault";
 
                     getUsersCollection().document(userNew.getUid())
@@ -85,10 +113,9 @@ public class UserRepository {
                         .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
                         .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
 
-        getUsersCollection().document(userNew.getUid()).collection("RestFavoris").document()
-                .set(restDefault)
-                .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
-                .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
+       //getUsersCollection().document(userNew.getUid()).collection("RestFavoris").document().set(restDefault)
+                //.addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
+                //.addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
     }
     //Permettra d'ajouter au clique dans une liste Place ou pas FireStore ? un Array peut-être ?
     public void updateUserRestFavoris(RestaurantDetailViewState place){
@@ -161,21 +188,19 @@ public class UserRepository {
             }
         }
 
-        RestaurantDetailViewState detailViewState = new RestaurantDetailViewState();
-
         if(mPlace != null) {
-            detailViewState.setName(mPlace.getName());
-            detailViewState.setAdr_address(mPlace.getAdr_address());
-            detailViewState.setUrl(mPlace.getUrl());
-            detailViewState.setPhoto(photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()));
-            detailViewState.setFormatted_phone_number(mPlace.getFormatted_phone_number());
-            detailViewState.setPlace_id(mPlace.getPlace_id());
-            detailViewState.setUserCurrentRest(mListUserCurrent);
-            detailViewState.setRestCurrent(restCurrent);
-            detailViewState.setFav(Fav);
+            RestaurantDetailViewState detailViewState = new RestaurantDetailViewState(
+                    mPlace.getPlace_id(),
+                    mPlace.getName(),
+                    mPlace.getUrl(),
+                    mPlace.getFormatted_phone_number(),
+                    mPlace.getAdr_address(),
+                    photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
+                    mListUserCurrent,
+                    Fav,restCurrent);
+            restDetailLiveData.setValue(detailViewState);
         }
 
-        restDetailLiveData.setValue(detailViewState);
         return restDetailLiveData;
     }
 
@@ -191,14 +216,17 @@ public class UserRepository {
         if (places != null) {
             Log.d("error","Places existent");
             for (Place place: places){
-                if(!place.getPhotos().isEmpty()){url = photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference());}
+                if(!place.getPhotos().isEmpty()){
+                    url = photoReftoPhotoURl(place.getPhotos().get(0).getPhoto_reference());
+                    Log.d("photos","N'est pas vide"+url);}
 
                 if (mListCountCurrent != null) {
                     Log.d("error","mListCountCurrent existent");
                     if (mListDistancesCurrent != null) {
                         Log.d("error","mListDistancesCurrent existent");
                         restModel = new Restaurant(place.getName(),
-                                place.getUrl(), place.getFormatted_phone_number(), place.getOpening_hours(),
+                                place.getUrl(), place.getFormatted_phone_number(),
+                                place.getOpening_hours(),
                                 place.getAdr_address(),
                                 place.getPlace_id(),
                                 url,
@@ -270,17 +298,18 @@ public class UserRepository {
         List<Integer> ListI = new ArrayList<>();
         int i = 0;
 
-        for (User usersList : users) {
-            for (Place place : places) {
-                if (usersList.getRestaurantChoose() != null) {
-                    if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
-                        i++;
+        if(users != null) {
+            for (User usersList : users) {
+                for (Place place : places) {
+                    if (usersList.getRestaurantChoose() != null) {
+                        if (usersList.getRestaurantChoose().getName().equals(place.getName())) {
+                            i++;
+                        }
                     }
+                    ListI.add(i);
                 }
-                ListI.add(i);
             }
         }
-
         return ListI;
     }
 }
