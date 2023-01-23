@@ -62,7 +62,6 @@ public class RestViewModelTest {
         MutableLiveData<List<User>> userTest = new MutableLiveData<>(usersTest);
         when(userRepository.getUserData()).thenReturn(userTest);
 
-
         List<Prediction> predictions = new ArrayList<>();
         Prediction prediction = new Prediction("1");
         predictions.add(prediction);

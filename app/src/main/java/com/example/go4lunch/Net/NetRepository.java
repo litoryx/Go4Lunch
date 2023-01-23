@@ -8,7 +8,9 @@ import com.example.go4lunch.objetGoogle.Place;
 import com.example.go4lunch.objetGoogle.PlaceDetailsResponse;
 import com.example.go4lunch.objetGoogle.PlacesNearbySearchResponse;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -20,6 +22,7 @@ import retrofit2.Response;
 public class NetRepository {
 
     NetService netService;
+    Map<String, List<Place>> mCache = new HashMap<>();
 
     public NetRepository(NetService netService) {
         this.netService = netService;
@@ -32,24 +35,30 @@ public class NetRepository {
         // 2.2 - Get a Retrofit instance and the related endpoints
         NetService netService = NetServiceRetrofit.getnetService();
 
-        // 2.3 - Create the call on Github API
-        Call<PlacesNearbySearchResponse> call = netService.getFollowing(location, 1500,"restaurant", BuildConfig.MAPS_API_KEY);
-        // 2.4 - Start the call
-        call.enqueue(new Callback<PlacesNearbySearchResponse>() {
+        if(mCache.get(location) != null){
+            nearby.setValue(mCache.get(location));
+        }else {
 
-            @Override
-            public void onResponse(@NonNull Call<PlacesNearbySearchResponse> call, @NonNull Response<PlacesNearbySearchResponse> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    nearby.setValue(response.body().getPlaces());
+            // 2.3 - Create the call on Github API
+            Call<PlacesNearbySearchResponse> call = netService.getFollowing(location, 1500, "restaurant", BuildConfig.MAPS_API_KEY);
+            // 2.4 - Start the call
+            call.enqueue(new Callback<PlacesNearbySearchResponse>() {
+
+                @Override
+                public void onResponse(@NonNull Call<PlacesNearbySearchResponse> call, @NonNull Response<PlacesNearbySearchResponse> response) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        nearby.setValue(response.body().getPlaces());
+                        mCache.put(location, response.body().getPlaces());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<PlacesNearbySearchResponse> call, @NonNull Throwable t) {
-                nearby.setValue(null);
-                Log.d("NetRepository","Failure getfollowing");
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<PlacesNearbySearchResponse> call, @NonNull Throwable t) {
+                    nearby.setValue(null);
+                    Log.d("NetRepository", "Failure getfollowing");
+                }
+            });
+        }
         return nearby;
     }
 
