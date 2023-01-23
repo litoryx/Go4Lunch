@@ -77,7 +77,6 @@ public class ListRestViewModel extends ViewModel {
     }
 
     public LiveData<List<Restaurant>> getListRest() {
-        Log.d("error","retourne liste dans Fragment");
         return viewstate;
     }
 

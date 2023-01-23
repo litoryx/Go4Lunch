@@ -194,7 +194,7 @@ public class UserRepository {
                     mPlace.getName(),
                     mPlace.getUrl(),
                     mPlace.getFormatted_phone_number(),
-                    mPlace.getAdr_address(),
+                    mPlace.getVicinity(),
                     photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
                     mListUserCurrent,
                     Fav,restCurrent);
@@ -224,10 +224,12 @@ public class UserRepository {
                     Log.d("error","mListCountCurrent existent");
                     if (mListDistancesCurrent != null) {
                         Log.d("error","mListDistancesCurrent existent");
-                        restModel = new Restaurant(place.getName(),
-                                place.getUrl(), place.getFormatted_phone_number(),
-                                place.getOpening_hours(),
-                                place.getAdr_address(),
+                        restModel = new Restaurant(
+                                place.getName(),
+                                place.getUrl(),
+                                place.getFormatted_phone_number(),
+                                place.getOpening_hours().isOpen_now(),
+                                place.getVicinity(),
                                 place.getPlace_id(),
                                 url,
                                 mListCountCurrent.get(i),

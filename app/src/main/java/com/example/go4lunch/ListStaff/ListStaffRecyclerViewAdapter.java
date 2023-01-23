@@ -64,7 +64,8 @@ public class ListStaffRecyclerViewAdapter extends ListAdapter<User, ListStaffRec
                 String styleR = user.getRestaurantChoose().getStyle();
                 String resto = user.getRestaurantChoose().getName();
 
-                mStyleR.setText(styleR);
+
+                if(styleR != null){mStyleR.setText(styleR);}else{mStyleR.setText("rien");}
                 mResto.setText(resto);
                 Glide.with(circleImageView.getContext()).load("https://firebasestorage.googleapis.com/v0/b/go4lucnch.appspot.com/o/restaurant.jpg?alt=media&token=257934b8-7d69-4d20-80d4-40a58df39a9c").into(circleImageView);
             }

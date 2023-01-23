@@ -23,6 +23,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,28 +79,17 @@ public class ListRestRecyclerViewAdapter extends ListAdapter<Restaurant, ListRes
             int b = Math.round(numberMetersDistance);
             String stNumberMetersDistance = b+"m";
             String stNumberUserInSameRest = "("+numberUserInSameRest+")";
-            PlaceOpeningHours opHours = restaurant.getOpening_hours();
-            String adr_address = restaurant.getAdr_address();
             String name = restaurant.getName();
-            String time = null;
-            Number day = null;
 
-            if(adr_address != null){mAdrRest.setText(adr_address);}else{
-                mAdrRest.setText("Pas d'adresse"); }
+            mAdrRest.setText(restaurant.getAdr());
             mDistance.setText(stNumberMetersDistance);
             mWorkmates.setText(stNumberUserInSameRest);
             mNameRest.setText(name);
-            if(opHours != null) {
-                List<PlaceOpeningHoursPeriod> openingHoursPeriods = opHours.getPeriods();
-                if(openingHoursPeriods != null){
-                    //Liste open et close la liste close n'est pas required openingHoursPeriods.get(0)
-                    day = openingHoursPeriods.get(0).getPlaceOpeningHoursPeriodDetail().getDay();
-                    time = openingHoursPeriods.get(0).getPlaceOpeningHoursPeriodDetail().getTime();}
-                String result = day+" "+time;
-                mOpen_horary.setText(result);
-                Log.d("horaire","Horaire modifié");
-            }else{mOpen_horary.setText("wtf");
-                Log.d("horaire","Horaire null");}
+
+            if(restaurant.getOpen()){
+            mOpen_horary.setText("Ouvert actuellement");
+            mOpen_horary.setTextColor(ContextCompat.getColor(this.mOpen_horary.getContext(),R.color.green));
+            }else{mOpen_horary.setText("Fermé");}
 
             Glide.with(mPhtoRest.getContext()).load(restaurant.getPhoto()).into(mPhtoRest);
 

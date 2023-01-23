@@ -1,5 +1,6 @@
 package com.example.go4lunch.objetGoogle;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -7,15 +8,16 @@ import android.util.Log;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 public class Place implements Parcelable {
 
     String name;
     Geometry geometry;
     String url;
-    String formatted_phone_number;
     PlaceOpeningHours opening_hours;
-    String formatted_address;
+    String formatted_phone_number;
+    String vicinity;
     String place_id;
     List<PlacePhoto> photos;
 
@@ -26,12 +28,13 @@ public class Place implements Parcelable {
     public Place(Parcel in) {
         name = in.readString();
         url = in.readString();
-        formatted_address = in.readString();
         formatted_phone_number = in.readString();
+        vicinity = in.readString();
         place_id = in.readString();
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
+
         @Override
         public Place createFromParcel(Parcel in) {
             return new Place(in);
@@ -57,8 +60,8 @@ public class Place implements Parcelable {
         return opening_hours;
     }
 
-    public String getAdr_address() {
-        return formatted_address;
+    public String getVicinity() {
+        return vicinity;
     }
 
     public String getUrl() {
@@ -82,14 +85,12 @@ public class Place implements Parcelable {
         return 0;
     }
 
-
-
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(url);
-        parcel.writeString(formatted_address);
         parcel.writeString(formatted_phone_number);
+        parcel.writeString(vicinity);
         parcel.writeString(place_id);
     }
 }

@@ -9,6 +9,7 @@ import com.example.go4lunch.Net.NetRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
 import com.example.go4lunch.autocomplete.Prediction;
 import com.example.go4lunch.models.PermissionChecker;
+import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.models.RestaurantChoose;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetGoogle.Place;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import static org.mockito.Mockito.mock;
@@ -44,7 +46,7 @@ public class RestViewModelTest {
             userRepository, permRepository);
 
     @Test
-    public void testRestGetList(){
+    public void testRestGetList() throws InterruptedException {
         MutableLiveData<Location> locationLivedata = new MutableLiveData<>(createLocation(1.0, 0.0));
         when(locationRepository.getLocationLiveDatafft()).thenReturn(locationLivedata);
 
@@ -68,19 +70,11 @@ public class RestViewModelTest {
         MutableLiveData<List<Prediction>> predTest = new MutableLiveData<>(predictions);
         when(autoRepository.getListPredictionLiveData()).thenReturn(predTest);
 
+        List<Restaurant> mListLiveDataRest = LiveDataTestUtil.getOrAwaitValue(mListRestViewModel.getListRest());
 
-        verify(autoRepository).getListPredictionLiveData();
         verify(locationRepository).getLocationLiveData();
         verify(userRepository).getUserData();
         verify(netRepository).fetchRestFollowing("1.0,0.0");
-
-        mListRestViewModel.getListRest();
-    }
-
-    @Test
-    public void testCombine(){
-
-
     }
 
     @Test

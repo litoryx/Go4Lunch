@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -54,7 +55,7 @@ public class ConnexionActivity2 extends AppCompatActivity {
 
         WorkManager
                 .getInstance(this)
-                .enqueue(saveRequest);
+                .enqueueUniquePeriodicWork("work1", ExistingPeriodicWorkPolicy.KEEP,saveRequest);
 
     }
 

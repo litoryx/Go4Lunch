@@ -15,7 +15,7 @@ public class Restaurant implements Parcelable {
     String name;
     String url;
     String formatted_phone_number;
-    PlaceOpeningHours opening_hours;
+    boolean open_now;
     String formatted_address;
     String place_id;
     String photo;
@@ -23,14 +23,14 @@ public class Restaurant implements Parcelable {
     Float distanceRest;
 
     public Restaurant(String name, String url, String formatted_phone_number,
-                      PlaceOpeningHours opening_hours, String adr_address, String place_id,
+                      boolean open_now, String formatted_address, String place_id,
                       String photo, Integer numbers_user_rest, Float distanceRest) {
 
         this.name = name;
         this.url = url;
         this.formatted_phone_number = formatted_phone_number;
-        this.opening_hours = opening_hours;
-        this.formatted_address = adr_address;
+        this.open_now = open_now;
+        this.formatted_address = formatted_address;
         this.place_id = place_id;
         this.photo = photo;
         this.numbers_user_rest = numbers_user_rest;
@@ -40,6 +40,7 @@ public class Restaurant implements Parcelable {
     public Restaurant(Parcel in) {
         name = in.readString();
         url = in.readString();
+        formatted_address = in.readString();
         formatted_phone_number = in.readString();
         place_id = in.readString();
         photo = in.readString();
@@ -99,16 +100,16 @@ public class Restaurant implements Parcelable {
         this.formatted_phone_number = formatted_phone_number;
     }
 
-    public PlaceOpeningHours getOpening_hours() {
-        if(opening_hours != null){return opening_hours;}else{return null;}
+    public boolean getOpen() {
+        return open_now;
     }
 
-    public void setOpening_hours(PlaceOpeningHours opening_hours) {
-        this.opening_hours = opening_hours;
+    public void setOpening_hours(boolean opening_hours) {
+        this.open_now = opening_hours;
     }
 
-    public String getAdr_address() {
-        if(formatted_address != null){return formatted_address;}else{return null;}
+    public String getAdr() {
+        return formatted_address;
     }
 
     public void setAdr_address(String adr_address) {
@@ -140,6 +141,7 @@ public class Restaurant implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(url);
+        parcel.writeString(formatted_address);
         parcel.writeString(formatted_phone_number);
         parcel.writeString(place_id);
         parcel.writeString(photo);
