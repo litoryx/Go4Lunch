@@ -2,16 +2,10 @@ package com.example.go4lunch;
 
 import android.os.Looper;
 
-import com.example.go4lunch.ListRest.ViewModelFactory;
-import com.example.go4lunch.ListStaff.StaffViewModel;
-import com.example.go4lunch.ListStaff.UserRepository;
-import com.example.go4lunch.ListStaff.UserViewModelFactory;
-import com.example.go4lunch.Net.LocationRepository;
-import com.example.go4lunch.Net.NetRepository;
-import com.example.go4lunch.Net.NetServiceRetrofit;
+import com.example.go4lunch.listrest.ViewModelFactory;
+import com.example.go4lunch.net.LocationRepository;
 import com.example.go4lunch.autocomplete.ACServiceRetrofit;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
-import com.example.go4lunch.autocomplete.AutoCompleteService;
 import com.example.go4lunch.models.PermissionChecker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

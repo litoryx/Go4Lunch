@@ -1,17 +1,13 @@
 package com.example.go4lunch;
 
-import com.example.go4lunch.Net.LocationRepository;
+import com.example.go4lunch.net.LocationRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
-import com.example.go4lunch.autocomplete.PlaceAutocompletePrediction;
 import com.example.go4lunch.autocomplete.Prediction;
 
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {

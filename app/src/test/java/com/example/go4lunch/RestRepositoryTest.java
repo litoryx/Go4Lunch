@@ -1,11 +1,10 @@
 package com.example.go4lunch;
 
-import com.example.go4lunch.Net.NetRepository;
-import com.example.go4lunch.Net.NetService;
-import com.example.go4lunch.Net.NetServiceRetrofit;
-import com.example.go4lunch.objetGoogle.Place;
-import com.example.go4lunch.objetGoogle.PlaceDetailsResponse;
-import com.example.go4lunch.objetGoogle.PlacesNearbySearchResponse;
+import com.example.go4lunch.net.NetRepository;
+import com.example.go4lunch.net.NetService;
+import com.example.go4lunch.objetgoogle.Place;
+import com.example.go4lunch.objetgoogle.PlaceDetailsResponse;
+import com.example.go4lunch.objetgoogle.PlacesNearbySearchResponse;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +26,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

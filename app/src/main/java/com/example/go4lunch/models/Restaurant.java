@@ -1,14 +1,10 @@
 package com.example.go4lunch.models;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.go4lunch.objetGoogle.AddressComponent;
-import com.example.go4lunch.objetGoogle.Geometry;
-import com.example.go4lunch.objetGoogle.PlaceOpeningHours;
-import com.example.go4lunch.objetGoogle.PlacePhoto;
-
-import java.util.List;
+import androidx.annotation.RequiresApi;
 
 public class Restaurant implements Parcelable {
 
@@ -37,10 +33,12 @@ public class Restaurant implements Parcelable {
         this.distanceRest = distanceRest;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public Restaurant(Parcel in) {
         name = in.readString();
         url = in.readString();
         formatted_address = in.readString();
+        open_now = in.readBoolean();
         formatted_phone_number = in.readString();
         place_id = in.readString();
         photo = in.readString();

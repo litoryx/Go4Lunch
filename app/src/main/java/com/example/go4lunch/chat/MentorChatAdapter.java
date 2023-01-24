@@ -1,11 +1,10 @@
 package com.example.go4lunch.chat;
 
-import android.os.UserManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.RequestManager;
-import com.example.go4lunch.ListStaff.UserRepository;
+import com.example.go4lunch.liststaff.UserRepository;
 import com.example.go4lunch.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

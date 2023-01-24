@@ -3,7 +3,7 @@ package com.example.go4lunch;
 import android.location.Location;
 import android.os.Looper;
 
-import com.example.go4lunch.Net.LocationRepository;
+import com.example.go4lunch.net.LocationRepository;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;

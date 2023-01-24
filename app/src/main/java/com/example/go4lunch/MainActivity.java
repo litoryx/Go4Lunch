@@ -1,30 +1,18 @@
 package com.example.go4lunch;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
-import com.example.go4lunch.Geo.GeoFragment;
-import com.example.go4lunch.ListRest.ListRestFragment;
-import com.example.go4lunch.ListStaff.ListStaffFragment;
-import com.example.go4lunch.ListStaff.StaffViewModel;
-import com.example.go4lunch.ListStaff.UserRepository;
-import com.example.go4lunch.ListStaff.UserViewModelFactory;
-import com.example.go4lunch.objetGoogle.Place;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.go4lunch.geo.GeoFragment;
+import com.example.go4lunch.listrest.ListRestFragment;
+import com.example.go4lunch.liststaff.ListStaffFragment;
+import com.example.go4lunch.liststaff.UserRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -38,8 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{

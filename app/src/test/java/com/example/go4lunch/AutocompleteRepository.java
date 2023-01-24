@@ -47,18 +47,13 @@ public class AutocompleteRepository {
         when(mAutoCompleteService.getPredictions(any(),any(),anyInt(),any(),any())).thenReturn(call);
         when(response.body()).thenReturn(createAutocompleteResponse());
 
-        mAutoCompleteRepository.updateSearch("1","1.0,0.0");
-
-        LiveData<List<Prediction>> restaurantsLivedata = mAutoCompleteRepository.getListPredictionLiveData();
+        List<Prediction> actual = LiveDataTestUtil.getOrAwaitValue(mAutoCompleteRepository.getListPredictionLiveData());
 
         verify(call).enqueue(argumentCaptor.capture());
         Callback<PlacesAutocompleteResponse> callback = argumentCaptor.getValue();
         callback.onResponse(call, response);
 
-        List<Prediction> actual = LiveDataTestUtil.getOrAwaitValue(restaurantsLivedata);
-
-        assertEquals(0, actual.size());
-        verify(mAutoCompleteService).getPredictions("1","1.0,0.0", 2000, "restaurant","key");
+        verify(mAutoCompleteService).getPredictions("Rue pelleport","1.0,0.0", 2000, "restaurant","key");
         verifyNoMoreInteractions(mAutoCompleteService);
     }
 

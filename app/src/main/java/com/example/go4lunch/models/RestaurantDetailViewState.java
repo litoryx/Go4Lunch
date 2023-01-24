@@ -1,7 +1,5 @@
 package com.example.go4lunch.models;
 
-import com.example.go4lunch.objetGoogle.AddressComponent;
-
 import java.util.List;
 
 public class RestaurantDetailViewState {
@@ -15,16 +13,14 @@ public class RestaurantDetailViewState {
     List<User> mUserCurrentRest;
     boolean mFav;
 
-    public RestaurantDetailViewState(String place_id, String name, String url, String formatted_phone_number, String adr_address, String photo, List<User> userCurrentRest, boolean fav, String restCurrent) {
+    public RestaurantDetailViewState(String place_id, String name, String url, String formatted_phone_number, String adr_address, String photo, boolean fav) {
         this.place_id = place_id;
         this.name = name;
         this.url = url;
         this.formatted_phone_number = formatted_phone_number;
         this.adr_address = adr_address;
         this.photo = photo;
-        mUserCurrentRest = userCurrentRest;
         mFav = fav;
-        this.restCurrent = restCurrent;
     }
 
     public boolean getFav() {

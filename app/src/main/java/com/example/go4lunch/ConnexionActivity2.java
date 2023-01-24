@@ -19,8 +19,11 @@ import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,15 +51,27 @@ public class ConnexionActivity2 extends AppCompatActivity {
         startSignInActivity();
 
         createNotificationChannel();
+        long delay = getIntervalTimeForDelay();
 
         PeriodicWorkRequest saveRequest =
-                new PeriodicWorkRequest.Builder(MyWork.class, 1, TimeUnit.DAYS)
+                new PeriodicWorkRequest.Builder(MyWork.class, 1, TimeUnit.DAYS).setInitialDelay(delay,TimeUnit.DAYS)
                         .build();
 
         WorkManager
                 .getInstance(this)
                 .enqueueUniquePeriodicWork("work1", ExistingPeriodicWorkPolicy.KEEP,saveRequest);
 
+    }
+
+    private long getIntervalTimeForDelay(){
+        Calendar calendar = Calendar.getInstance();
+
+        long time = calendar.get(Calendar.HOUR_OF_DAY);
+        Log.d("interval","Intervale fait");
+        if(time <= 12){
+            time = time - 12;
+        }
+        return time;
     }
 
     private void createNotificationChannel() {

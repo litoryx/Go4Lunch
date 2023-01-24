@@ -11,7 +11,7 @@ public class RestaurantChoose {
     }
 
     public String getName() {
-        return name;
+        if(name != null){return name;}else{return null;}
     }
 
     public String getStyle() {

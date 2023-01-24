@@ -60,6 +60,7 @@
 
             <ImageView
                 android:id="@+id/star_rest"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/toile_resto"
@@ -160,7 +161,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".ListStaff.ListStaffFragment"
+            tools:context=".liststaff.ListStaffFragment"
             tools:listitem="@layout/fragment_list_item_staff" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

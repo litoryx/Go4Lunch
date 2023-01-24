@@ -3,11 +3,9 @@ package com.example.go4lunch;
 
 import android.location.Location;
 
-import com.example.go4lunch.ListStaff.StaffViewModel;
-import com.example.go4lunch.Net.LocationRepository;
+import com.example.go4lunch.net.LocationRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
 import com.example.go4lunch.autocomplete.Prediction;
-import com.example.go4lunch.models.User;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import static org.mockito.Mockito.mock;

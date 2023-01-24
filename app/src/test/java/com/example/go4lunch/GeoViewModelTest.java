@@ -2,16 +2,16 @@ package com.example.go4lunch;
 
 import android.location.Location;
 
-import com.example.go4lunch.Geo.GeoViewModel;
-import com.example.go4lunch.ListStaff.UserRepository;
-import com.example.go4lunch.Net.LocationRepository;
-import com.example.go4lunch.Net.NetRepository;
+import com.example.go4lunch.geo.GeoViewModel;
+import com.example.go4lunch.liststaff.UserRepository;
+import com.example.go4lunch.net.LocationRepository;
+import com.example.go4lunch.net.NetRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
 import com.example.go4lunch.autocomplete.Prediction;
 import com.example.go4lunch.models.PermissionChecker;
 import com.example.go4lunch.models.RestaurantChoose;
 import com.example.go4lunch.models.User;
-import com.example.go4lunch.objetGoogle.Place;
+import com.example.go4lunch.objetgoogle.Place;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -62,7 +61,6 @@ public class GeoViewModelTest {
         MutableLiveData<List<User>> userTest = new MutableLiveData<>(usersTest);
         when(userRepository.getUserData()).thenReturn(userTest);
 
-
         List<Prediction> predictions = new ArrayList<>();
         Prediction prediction = new Prediction("1");
         predictions.add(prediction);
@@ -70,13 +68,12 @@ public class GeoViewModelTest {
         MutableLiveData<List<Prediction>> predTest = new MutableLiveData<>(predictions);
         when(autoRepository.getListPredictionLiveData()).thenReturn(predTest);
 
+        geoViewModel.getUserLocation();
 
         verify(autoRepository).getListPredictionLiveData();
         verify(locationRepository).getLocationLiveData();
         verify(userRepository).getUserData();
         verify(netRepository).fetchRestFollowing("1.0,0.0");
-
-        geoViewModel.getUserLocation();
     }
 
     @Test
