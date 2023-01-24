@@ -3,10 +3,12 @@ package com.example.go4lunch;
 
 import android.location.Location;
 
+import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.net.LocationRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
 import com.example.go4lunch.autocomplete.Prediction;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +35,10 @@ public class ViewModelTest {
     private final LocationRepository locationRepository = mock(LocationRepository.class);
     private final AutoCompleteRepository autoRepository = mock(AutoCompleteRepository.class);
 
-    private final MainViewModel mainViewModel = new MainViewModel(autoRepository, locationRepository);
+    private MainViewModel mainViewModel;
 
-    @Test
-    public void testViewModelUpdateSearch(){
+    @Before
+    public void setup(){
         MutableLiveData<Location> locationLivedata = new MutableLiveData<>(createLocation(1.0, 0.0));
         when(locationRepository.getLocationLiveDatafft()).thenReturn(locationLivedata);
 
@@ -47,8 +49,15 @@ public class ViewModelTest {
         MutableLiveData<List<Prediction>> predTest = new MutableLiveData<>(predictions);
         when(autoRepository.getListPredictionLiveData()).thenReturn(predTest);
 
+        mainViewModel = new MainViewModel(autoRepository, locationRepository);
+
         verify(autoRepository).getListPredictionLiveData();
         verify(locationRepository).getLocationLiveData();
+    }
+
+    @Test
+    public void testViewModelTextSearch() throws InterruptedException {
+        List<Prediction> pred = LiveDataTestUtil.getOrAwaitValue(mainViewModel.getPredictions());
 
         verify(mainViewModel).updateSearchText("New York");
         verifyNoMoreInteractions(mainViewModel);

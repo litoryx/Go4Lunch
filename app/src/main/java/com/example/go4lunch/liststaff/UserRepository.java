@@ -185,12 +185,12 @@ public class UserRepository {
             Log.d("PlaceDetail","nom : "+mPlace.getPlace_id());
 
             RestaurantDetailViewState detailViewState = new RestaurantDetailViewState(
-                    photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
+                    mPlace.getPlace_id(),
                     mPlace.getName(),
-                    mPlace.getUrl(),
+                    photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
                     mPlace.getFormatted_phone_number(),
                     mPlace.getVicinity(),
-                    mPlace.getPlace_id(),
+                    photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
                     Fav);
             restDetailLiveData.setValue(detailViewState);
         }else{Log.d("PlaceDetail","nom : ");}

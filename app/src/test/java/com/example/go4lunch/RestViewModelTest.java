@@ -14,6 +14,7 @@ import com.example.go4lunch.models.RestaurantChoose;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetgoogle.Place;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,15 +42,20 @@ public class RestViewModelTest {
     private final AutoCompleteRepository autoRepository = mock(AutoCompleteRepository.class);
     private final PermissionChecker permRepository = mock(PermissionChecker.class);
 
-    private final ListRestViewModel mListRestViewModel = new ListRestViewModel(netRepository, locationRepository,
-            userRepository, permRepository);
+    private ListRestViewModel mListRestViewModel;
 
-    @Test
-    public void testRestGetList() throws InterruptedException {
+    @Before
+    public void setup() {
         MutableLiveData<Location> locationLivedata = new MutableLiveData<>(createLocation(1.0, 0.0));
         when(locationRepository.getLocationLiveDatafft()).thenReturn(locationLivedata);
+        MutableLiveData<String> locationStringLivedata = new MutableLiveData<>("1.0,0.0");
+        when(locationRepository.getLocationLiveData()).thenReturn(locationStringLivedata);
 
-        MutableLiveData<List<Place>> placeTest = new MutableLiveData<>(null);
+        List<Place> places = new ArrayList<>();
+        Place place = new Place("Wtf","wtf","065985221","Rue des papa","1");
+        places.add(place);
+
+        MutableLiveData<List<Place>> placeTest = new MutableLiveData<>(places);
         when(netRepository.fetchRestFollowing("1.0,0.0")).thenReturn(placeTest);
 
         List<User> usersTest = new ArrayList<>();
@@ -68,11 +74,20 @@ public class RestViewModelTest {
         MutableLiveData<List<Prediction>> predTest = new MutableLiveData<>(predictions);
         when(autoRepository.getListPredictionLiveData()).thenReturn(predTest);
 
-        List<Restaurant> mListLiveDataRest = LiveDataTestUtil.getOrAwaitValue(mListRestViewModel.getListRest());
+       mListRestViewModel = new ListRestViewModel(netRepository, locationRepository,
+                userRepository, permRepository);
 
         verify(locationRepository).getLocationLiveData();
+        verify(locationRepository).getLocationLiveDatafft();
         verify(userRepository).getUserData();
+    }
+
+    @Test
+    public void testRestGetList() throws InterruptedException {
+        List<Restaurant> restaurants = LiveDataTestUtil.getOrAwaitValue(mListRestViewModel.getListRest());
+
         verify(netRepository).fetchRestFollowing("1.0,0.0");
+        // TODO assert que le contenu de 'restaurants' est bien ce qui est attendu
     }
 
     @Test

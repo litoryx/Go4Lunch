@@ -18,16 +18,25 @@ public class Place implements Parcelable {
     String place_id;
     List<PlacePhoto> photos;
 
+    public Place(String name, String url, String formatted_phone_number, String vicinity, String place_id) {
+        this.name = name;
+        this.url = url;
+        this.formatted_phone_number = formatted_phone_number;
+        this.vicinity = vicinity;
+        this.place_id = place_id;
+    }
+
     public List<PlacePhoto> getPhotos() {
         return photos;
     }
 
     public Place(Parcel in) {
+        place_id = in.readString();
         name = in.readString();
         url = in.readString();
         formatted_phone_number = in.readString();
         vicinity = in.readString();
-        place_id = in.readString();
+
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {
@@ -84,10 +93,11 @@ public class Place implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(place_id);
         parcel.writeString(name);
         parcel.writeString(url);
         parcel.writeString(formatted_phone_number);
         parcel.writeString(vicinity);
-        parcel.writeString(place_id);
+
     }
 }

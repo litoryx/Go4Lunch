@@ -47,6 +47,7 @@ public class Restaurant implements Parcelable {
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public Restaurant createFromParcel(Parcel in) {
             return new Restaurant(in);

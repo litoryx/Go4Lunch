@@ -87,10 +87,14 @@ public class RestRepositoryTest {
     }
 
     private PlaceDetailsResponse createDetailSearchResponse() {
-        return new PlaceDetailsResponse(new Place(null));
+        Place place = new Place("Wtf","wtf","065985221","Rue des papa","1");
+        return new PlaceDetailsResponse(place);
     }
 
     private PlacesNearbySearchResponse createNearbySearchResponse() {
-        return new PlacesNearbySearchResponse(new ArrayList<>());
+        List<Place> results = new ArrayList<>();
+        Place place = new Place("Wtf","wtf","065985221","Rue des papa","1");
+        results.add(place);
+        return new PlacesNearbySearchResponse(results);
     }
 }

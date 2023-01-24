@@ -63,7 +63,6 @@ public class ListRestViewModel extends ViewModel {
     public void combine(List<Place> places, List<User> users){
         if(places == null || users == null){return;}
         List<Restaurant> rest = mUserRepository.createListRest(places, locationLiveData.getValue(), users);
-        if(rest.size() == 0){Log.d("error","0 dans la liste restaurant");}
         viewstate.setValue(rest);
     }
 

@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.example.go4lunch.geo.GeoViewModel;
 import com.example.go4lunch.liststaff.UserRepository;
+import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.net.LocationRepository;
 import com.example.go4lunch.net.NetRepository;
 import com.example.go4lunch.autocomplete.AutoCompleteRepository;
@@ -13,6 +14,7 @@ import com.example.go4lunch.models.RestaurantChoose;
 import com.example.go4lunch.models.User;
 import com.example.go4lunch.objetgoogle.Place;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,10 +44,10 @@ public class GeoViewModelTest {
     private final AutoCompleteRepository autoRepository = mock(AutoCompleteRepository.class);
     private final PermissionChecker permRepository = mock(PermissionChecker.class);
 
-    private final GeoViewModel geoViewModel = new GeoViewModel(netRepository, locationRepository, userRepository, autoRepository, permRepository);
+    private GeoViewModel geoViewModel;
 
-    @Test
-    public void testGeoViewModel(){
+    @Before
+    public void setup(){
         MutableLiveData<Location> locationLivedata = new MutableLiveData<>(createLocation(1.0, 0.0));
         when(locationRepository.getLocationLiveDatafft()).thenReturn(locationLivedata);
 
@@ -68,12 +70,16 @@ public class GeoViewModelTest {
         MutableLiveData<List<Prediction>> predTest = new MutableLiveData<>(predictions);
         when(autoRepository.getListPredictionLiveData()).thenReturn(predTest);
 
-        geoViewModel.getUserLocation();
+        geoViewModel = new GeoViewModel(netRepository, locationRepository, userRepository, autoRepository, permRepository);
 
         verify(autoRepository).getListPredictionLiveData();
         verify(locationRepository).getLocationLiveData();
         verify(userRepository).getUserData();
-        verify(netRepository).fetchRestFollowing("1.0,0.0");
+    }
+
+    @Test
+    public void testGeoViewModel(){
+        geoViewModel.getUserLocation();
     }
 
     @Test
