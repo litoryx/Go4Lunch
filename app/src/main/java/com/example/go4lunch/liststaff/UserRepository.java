@@ -18,7 +18,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
@@ -136,11 +138,11 @@ public class UserRepository {
     //Permet d'ajouter le restaurant au clique du bouton Présent.
     public void updateUserRest(RestaurantDetailViewState place){
         FirebaseUser mUser = getCurrentUser();
-        if(mUser != null) {
-            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.id", place.getPlace_id());
-            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.name", place.getName());
-            getUsersCollection().document(mUser.getUid()).update("restaurantChoose.style","Francais");
-        }
+        Map<String, String> map = new HashMap<>();
+        map.put("id", place.getPlace_id());
+        map.put("name", place.getName());
+        map.put("style", "Francais");
+        getUsersCollection().document(mUser.getUid()).update("restaurantChoose", map);
     }
 
     public LiveData<String> getUserRest(){
