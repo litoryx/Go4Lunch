@@ -34,7 +34,7 @@ public class RestaurantDetailViewState {
     String restCurrent;
 
     public String getAdr_address() {
-        return adr_address;
+    if(adr_address != null){return adr_address;}else{return null;}
     }
 
     public void setPlace_id(String place_id) {
@@ -68,31 +68,46 @@ public class RestaurantDetailViewState {
 
 
     public String getPlace_id() {
-        return place_id;
+        if (place_id != null) {
+            return place_id;
+        }else{return null;}
     }
 
     public String getName() {
-        return name;
+        if (name != null) {
+            return name;
+        }else{return null;}
     }
 
     public String getUrl() {
-        return url;
+        if (url != null) {
+            return url;
+        }else{return null;}
     }
 
     public String getFormatted_phone_number() {
-        return formatted_phone_number;
+            if (formatted_phone_number != null) {
+                return formatted_phone_number;
+        }else{return null;}
+
     }
 
     public String getPhoto() {
-        return photo;
+        if (formatted_phone_number != null) {
+            return photo;
+        }else{return null;}
     }
 
     public List<User> getUserCurrentRest() {
+        if (formatted_phone_number != null) {
         return mUserCurrentRest;
+        }else{return null;}
     }
 
     public String getRestCurrent() {
+            if (formatted_phone_number != null) {
         return restCurrent;
+            }else{return null;}
     }
 
     public void setRestCurrent(String restCurrent) {

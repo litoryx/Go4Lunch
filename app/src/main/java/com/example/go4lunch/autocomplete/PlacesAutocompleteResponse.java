@@ -6,20 +6,13 @@ import java.util.List;
 public class PlacesAutocompleteResponse {
 
     List<PlaceAutocompletePrediction> predictions;
-    PlacesAutocompleteStatus status;
 
-    public PlacesAutocompleteResponse(List<PlaceAutocompletePrediction> predictions, PlacesAutocompleteStatus status) {
+    public PlacesAutocompleteResponse(List<PlaceAutocompletePrediction> predictions) {
         this.predictions = predictions;
-        this.status = status;
     }
-
-
 
     public List<PlaceAutocompletePrediction> getPredictions() {
         return predictions;
     }
 
-    public PlacesAutocompleteStatus getStatus() {
-        return status;
-    }
 }

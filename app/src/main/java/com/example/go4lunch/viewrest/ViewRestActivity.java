@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.go4lunch.liststaff.ListStaffRecyclerViewAdapter;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.Restaurant;
@@ -28,6 +29,7 @@ public class ViewRestActivity extends AppCompatActivity {
     ImageButton mImageButtonWS;
     ImageButton mImageButtonCall;
     ImageButton mImageButtonFav;
+    ImageView imgRest;
     ImageView mStartRest;
     RecyclerView mRecyclerView;
     ListStaffRecyclerViewAdapter listStaffRecyclerViewAdapter = new ListStaffRecyclerViewAdapter();
@@ -36,6 +38,7 @@ public class ViewRestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_rest);
+        imgRest = findViewById(R.id.img);
         mName_Detail = findViewById(R.id.nameRDetail);
         mAdr_Detail = findViewById(R.id.adresse);
         mButtonPresent = findViewById(R.id.present);
@@ -43,6 +46,8 @@ public class ViewRestActivity extends AppCompatActivity {
         mImageButtonWS = findViewById(R.id.website);
         mImageButtonCall = findViewById(R.id.call);
         mStartRest = findViewById(R.id.star_rest);
+        mImageButtonFav = findViewById(R.id.fav);
+
 
         mStartRest.setVisibility(View.GONE);
 
@@ -60,6 +65,9 @@ public class ViewRestActivity extends AppCompatActivity {
         Log.d("PlaceDetail","nom : "+place.getName());
         mName_Detail.setText(place.getName());
         mAdr_Detail.setText(place.getAdr_address());
+
+        Log.d("getPhoto",""+place.getPhoto());
+        Glide.with(this).load(place.getPhoto()).into(imgRest);
 
         listStaffRecyclerViewAdapter.submitList(place.getUserCurrentRest());
         listStaffRecyclerViewAdapter.notifyDataSetChanged();

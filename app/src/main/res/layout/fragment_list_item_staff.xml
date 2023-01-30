@@ -35,7 +35,7 @@
         android:id="@+id/mange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" mange"
+        android:text=" mange "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/username"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
         android:id="@+id/styleR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Coréen"
+        android:text="Coréen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mange"
         app:layout_constraintTop_toTopOf="parent" />

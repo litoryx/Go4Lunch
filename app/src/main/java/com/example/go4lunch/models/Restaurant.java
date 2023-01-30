@@ -25,22 +25,21 @@ public class Restaurant implements Parcelable {
         this.name = name;
         this.url = url;
         this.formatted_phone_number = formatted_phone_number;
-        this.open_now = open_now;
         this.formatted_address = formatted_address;
         this.place_id = place_id;
         this.photo = photo;
+        this.open_now = open_now;
         this.numbers_user_rest = numbers_user_rest;
         this.distanceRest = distanceRest;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public Restaurant(Parcel in) {
+        place_id = in.readString();
         name = in.readString();
         url = in.readString();
         formatted_address = in.readString();
-        open_now = in.readBoolean();
         formatted_phone_number = in.readString();
-        place_id = in.readString();
         photo = in.readString();
         numbers_user_rest = in.readInt();
         distanceRest = in.readFloat();
@@ -87,49 +86,30 @@ public class Restaurant implements Parcelable {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getFormatted_phone_number() {
         return formatted_phone_number;
     }
 
-    public void setFormatted_phone_number(String formatted_phone_number) {
-        this.formatted_phone_number = formatted_phone_number;
-    }
 
     public boolean getOpen() {
         return open_now;
     }
 
-    public void setOpening_hours(boolean opening_hours) {
-        this.open_now = opening_hours;
-    }
 
     public String getAdr() {
         return formatted_address;
     }
 
-    public void setAdr_address(String adr_address) {
-        this.formatted_address = adr_address;
-    }
 
     public String getPlace_id() {
         return place_id;
     }
 
-    public void setPlace_id(String place_id) {
-        this.place_id = place_id;
-    }
 
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 
     @Override
     public int describeContents() {
@@ -138,12 +118,13 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(place_id);
         parcel.writeString(name);
         parcel.writeString(url);
         parcel.writeString(formatted_address);
         parcel.writeString(formatted_phone_number);
-        parcel.writeString(place_id);
         parcel.writeString(photo);
+
         if (numbers_user_rest == null) {
             parcel.writeByte((byte) 0);
         } else {

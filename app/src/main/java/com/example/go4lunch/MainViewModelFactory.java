@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 public class MainViewModelFactory implements ViewModelProvider.Factory {
 
     private static MainViewModelFactory factory;
-    MainApplication mMainApplication;
     Looper mLooper;
 
     public static MainViewModelFactory getInstance() {
@@ -34,8 +33,8 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
 
     FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(MainApplication.getApplication());
     private final LocationRepository mLocationRepository = new LocationRepository(locationClient, mLooper);
-    private final PermissionChecker mPermissionChecker = new PermissionChecker(mMainApplication);
-    private final AutoCompleteRepository mAutoCompleteRepository = new AutoCompleteRepository(ACServiceRetrofit.getACService());
+    private final PermissionChecker mPermissionChecker = new PermissionChecker(MainApplication.getApplication());
+    private final AutoCompleteRepository mAutoCompleteRepository = AutoCompleteRepository.getInstance();
 
     private MainViewModelFactory() {
     }
@@ -46,7 +45,7 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainViewModel.class)) {
             // We inject the Repository in the ViewModel constructor
-            return (T) new MainViewModel(mAutoCompleteRepository, mLocationRepository);
+            return (T) new MainViewModel(mAutoCompleteRepository, mLocationRepository, mPermissionChecker);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

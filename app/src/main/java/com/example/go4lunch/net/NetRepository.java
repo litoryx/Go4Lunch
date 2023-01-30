@@ -55,7 +55,8 @@ public class NetRepository {
                 @Override
                 public void onFailure(@NonNull Call<PlacesNearbySearchResponse> call, @NonNull Throwable t) {
                     nearby.setValue(null);
-                    Log.d("NetRepository", "Failure getfollowing");
+                    Log.d("NetRepository", "Failure getfollowing"+t.getMessage());
+                    t.printStackTrace();
                 }
             });
         }

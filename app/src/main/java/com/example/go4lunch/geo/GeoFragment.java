@@ -1,5 +1,6 @@
 package com.example.go4lunch.geo;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
@@ -78,6 +79,13 @@ public class GeoFragment extends Fragment implements
 
         assert mapFragment != null;
         mapFragment.getMapAsync( this);
+
+        ActivityCompat.requestPermissions(
+                requireActivity(),
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                0
+        );
+
         return view;
     }
 
@@ -92,6 +100,7 @@ public class GeoFragment extends Fragment implements
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
         viewModel.getViewStateLiveData().observe(getViewLifecycleOwner(), geoViewState -> {
+            map.clear();
             for (GeoViewState viewState : geoViewState) {
                 LatLng mCoord = new LatLng(viewState.getLat(), viewState.getLng());
                 Log.d("Coord", mCoord+"");

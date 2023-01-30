@@ -12,6 +12,7 @@ import com.example.go4lunch.objetgoogle.Place;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -111,6 +112,18 @@ public class UserRepository {
                         .addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
                         .addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
 
+        CollectionReference dbFavoris = mFirebaseFirestore.collection("RestFavoris");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("id", "null");
+        map.put("name", "null");
+        map.put("style", "null");
+        getUsersCollection().document(user.getUid()).update("restaurantChoose", map);
+
+       //getUsersCollection().document(userNew.getUid()).set(dbFavoris).
+               //addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
+               //.addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
+
        //getUsersCollection().document(userNew.getUid()).collection("RestFavoris").document().set(restDefault)
                 //.addOnSuccessListener(aVoid -> Log.d("success", "DocumentSnapshot successfully written!"))
                 //.addOnFailureListener(e -> Log.w("stop", "Error writing document", e));
@@ -192,7 +205,7 @@ public class UserRepository {
                     photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
                     mPlace.getFormatted_phone_number(),
                     mPlace.getVicinity(),
-                    photoReftoPhotoURl(mPlace.getPhotos().get(0).getPhoto_reference()),
+                    mPlace.getPhotos().get(0).getPhoto_reference(),
                     Fav);
             restDetailLiveData.setValue(detailViewState);
         }else{Log.d("PlaceDetail","nom : ");}

@@ -11,35 +11,20 @@ public class User {
     private RestaurantChoose restaurantChoose;
     private String mail;
     private List<String> mListFav;
-    private String urlPicture;
+    private String photoUrl;
     private boolean isMentor;
 
     public boolean getIsMentor() {
         return isMentor;
     }
 
-    public void setMentor(boolean mentor) {
-        isMentor = mentor;
-    }
-
-    public void setListFav(List<String> listFav) {
-        mListFav = listFav;
-    }
-
     public String getUrlPicture() {
-        return urlPicture;
+        return photoUrl;
     }
 
-    public void setUrlPicture(String urlPicture) {
-        this.urlPicture = urlPicture;
-    }
 
     public String getMail() {
         return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public User() { }
@@ -48,36 +33,25 @@ public class User {
         return mListFav;
     }
 
-    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail, List<String> listFav, String urlPicture) {
+    public User(String uid, String username, RestaurantChoose restaurantChoose, String mail, List<String> listFav, String photoUrl) {
         this.uid = uid;
         this.username = username;
         this.restaurantChoose = restaurantChoose;
         this.mail = mail;
         this.mListFav = listFav;
-        this.urlPicture = urlPicture;
+        this.photoUrl = photoUrl;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public RestaurantChoose getRestaurantChoose() {
         return restaurantChoose;
     }
 
-    public void setRestaurantChoose(RestaurantChoose restaurantChoose) {
-        this.restaurantChoose = restaurantChoose;
-    }
 }

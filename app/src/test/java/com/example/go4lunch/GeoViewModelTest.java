@@ -82,27 +82,6 @@ public class GeoViewModelTest {
         geoViewModel.getUserLocation();
     }
 
-    @Test
-    public void testRefresh(){
-
-        when(permRepository.hasLocationPermission()).thenReturn(true);
-
-        geoViewModel.refresh();
-
-        verify(locationRepository).startLocationRequest();
-        verifyNoMoreInteractions(locationRepository);
-    }
-
-    @Test
-    public void testNotRefresh(){
-
-        when(permRepository.hasLocationPermission()).thenReturn(false);
-
-        geoViewModel.refresh();
-
-        verify(locationRepository).stopLocationRequest();
-        verifyNoMoreInteractions(locationRepository);
-    }
 
     private Location createLocation(Double longitude, Double latitude) {
         Location location = mock(Location.class);

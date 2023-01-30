@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                Log.d("geoview",""+newText);
                 if(newText != null){mMainViewModel.updateSearchText(newText);
                     return true;}
 
@@ -101,6 +102,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMainViewModel.refresh();
     }
 
     void setup() {

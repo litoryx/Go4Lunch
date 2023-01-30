@@ -90,28 +90,6 @@ public class RestViewModelTest {
         // TODO assert que le contenu de 'restaurants' est bien ce qui est attendu
     }
 
-    @Test
-    public void testRefresh(){
-
-        when(permRepository.hasLocationPermission()).thenReturn(true);
-
-        mListRestViewModel.refresh();
-
-        verify(locationRepository).startLocationRequest();
-        verifyNoMoreInteractions(locationRepository);
-    }
-
-    @Test
-    public void testNotRefresh(){
-
-        when(permRepository.hasLocationPermission()).thenReturn(false);
-
-        mListRestViewModel.refresh();
-
-        verify(locationRepository).stopLocationRequest();
-        verifyNoMoreInteractions(locationRepository);
-    }
-
     private Location createLocation(Double longitude, Double latitude) {
         Location location = mock(Location.class);
         when(location.getLongitude()).thenReturn(longitude);

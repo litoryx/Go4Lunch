@@ -1,7 +1,5 @@
 package com.example.go4lunch.viewrest;
 
-import android.util.Log;
-
 import com.example.go4lunch.liststaff.UserRepository;
 import com.example.go4lunch.net.NetRepository;
 import com.example.go4lunch.models.Restaurant;
@@ -29,22 +27,29 @@ public class ViewRestViewModel extends ViewModel {
     }
 
     private RestaurantDetailViewState mapPlaceToRestaurantDetailViewState(Place placeDetails) {
-        String photoUrl = null;
-        if(!placeDetails.getPhotos().isEmpty()) {
-            if(placeDetails.getPhotos() != null) {
-                photoUrl = mUserRepository.photoReftoPhotoURl(placeDetails.getPhotos().get(0).getPhoto_reference());
-            }
-            }
+        RestaurantDetailViewState detailViewState;
 
-        return new RestaurantDetailViewState(
-                placeDetails.getPlace_id(),
-                placeDetails.getName(),
-                placeDetails.getUrl(),
-                placeDetails.getFormatted_phone_number(),
-                placeDetails.getVicinity(),
-                photoUrl,
+        if(placeDetails != null) {
+            detailViewState = new RestaurantDetailViewState(
+                    placeDetails.getPlace_id(),
+                    placeDetails.getName(),
+                    placeDetails.getUrl(),
+                    placeDetails.getFormatted_phone_number(),
+                    placeDetails.getVicinity(),
+                    mUserRepository.photoReftoPhotoURl(placeDetails.getPhotos().get(0).getPhoto_reference()),
+                    false
+            );
+        }else{detailViewState = new RestaurantDetailViewState(
+                "0",
+                "fqs",
+                "cdsplaceDetails.getUrl()",
+                "062543",
+                "rue fsqvfv",
+                "false",
                 false
-        );
+        );}
+
+        return detailViewState;
     }
 
     public void setUpdateRestChoose(RestaurantDetailViewState rest){

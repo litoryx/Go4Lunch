@@ -36,7 +36,6 @@ public class Place implements Parcelable {
         url = in.readString();
         formatted_phone_number = in.readString();
         vicinity = in.readString();
-
     }
 
     public static final Creator<Place> CREATOR = new Creator<Place>() {

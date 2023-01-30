@@ -43,8 +43,9 @@ public class AutoCompleteRepository {
                 if (response.body() != null && response.isSuccessful()) {
                     List<PlaceAutocompletePrediction> predis = response.body().getPredictions();
                     List<Prediction> mListPred = new ArrayList<>();
-
+                    Log.d("geoview",""+predis);
                     if (predis != null) {
+                        Log.d("geoview","Ajout predictions");
                             for (PlaceAutocompletePrediction prediction : predis) {
                                 Prediction pred = new Prediction(prediction.getPlace_id());
                                 mListPred.add(pred);
@@ -57,7 +58,8 @@ public class AutoCompleteRepository {
             @Override
             public void onFailure(@NonNull Call<PlacesAutocompleteResponse> call, @NonNull Throwable t) {
                 mListPredictionLiveData.setValue(null);
-                Log.d("NetRepository","Failure getfollowing");
+                Log.d("AutoCRepository","Failure getAutoCompletefollowing");
+                t.printStackTrace();
             }
         });
     }

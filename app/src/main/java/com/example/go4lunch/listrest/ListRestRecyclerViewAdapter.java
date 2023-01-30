@@ -1,6 +1,7 @@
 package com.example.go4lunch.listrest;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,8 @@ public class ListRestRecyclerViewAdapter extends ListAdapter<Restaurant, ListRes
             mOpen_horary.setTextColor(ContextCompat.getColor(this.mOpen_horary.getContext(),R.color.green));
             }else{mOpen_horary.setText("Fermé");}
 
+            Log.d("getPhoto",""+restaurant.getPhoto());
+            Log.d("getPhoto",""+restaurant.getUrl());
             Glide.with(mPhtoRest.getContext()).load(restaurant.getPhoto()).into(mPhtoRest);
 
             mRest.setOnClickListener(view -> {
