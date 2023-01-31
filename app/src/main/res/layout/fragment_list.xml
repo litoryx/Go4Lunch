@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/d_gage"
+        android:text="@strings/d_gage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/francais_12_rue_de_la_rochefoucauld"
+        android:text="@strings/francais_12_rue_de_la_rochefoucauld"
         app:layout_constraintBottom_toTopOf="@+id/horary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameRest" />
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/horarynot"
+        android:text="@strings/horarynot"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/_120_m"
+        android:text="@strings/_120_m"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,13 +55,13 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/workmates_number"
         app:layout_constraintTop_toBottomOf="@+id/distance"
-        android:contentDescription="@string/nombre_user" />
+        android:contentDescription="@strings/nombre_user" />
 
     <TextView
         android:id="@+id/workmates_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/_2"
+        android:text="@strings/_2"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/distance" />
@@ -74,7 +74,7 @@
         android:src="@drawable/ic_baseline_star_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
-        android:contentDescription="@string/nombre_toile_restaurant" />
+        android:contentDescription="@strings/nombre_toile_restaurant" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -85,6 +85,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/pho_restau" />
+        android:contentDescription="@strings/pho_restau" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

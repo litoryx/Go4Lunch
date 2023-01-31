@@ -43,8 +43,7 @@ public class GeoFragment extends Fragment implements
     GoogleMap map;
     FloatingActionButton mFloatingActionButton;
     View view;
-    int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private boolean permissionDenied = false;
+    Location loc = new Location("1.0,0.0");
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -110,12 +109,24 @@ public class GeoFragment extends Fragment implements
 
                     map.addMarker(new MarkerOptions()
                             .position(mCoord)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
                 }
+
+            loc = viewModel.getUserLocation();
+
+            if(loc != null) {
+                LatLng finalMCoord = new LatLng(loc.getLatitude(), loc.getLongitude());
+                float zoomLevel = 16f;
+
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(finalMCoord, zoomLevel));
+
+            }
         });
+
+
+
         mFloatingActionButton.setOnClickListener(view -> {
 
-            Location loc = viewModel.getUserLocation();
+            loc = viewModel.getUserLocation();
 
             if(loc != null) {
                 LatLng finalMCoord = new LatLng(loc.getLatitude(), loc.getLongitude());
@@ -123,8 +134,10 @@ public class GeoFragment extends Fragment implements
             }
 
         });
-        map.setOnMarkerClickListener(this);
 
+
+
+        map.setOnMarkerClickListener(this);
     }
 
     @Override

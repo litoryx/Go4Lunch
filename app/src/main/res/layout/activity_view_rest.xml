@@ -56,13 +56,13 @@
                 android:padding="5dp"
                 android:textColor="@color/white"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/le_nzc" />
+                android:text="@strings/le_nzc" />
 
             <ImageView
                 android:id="@+id/star_rest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/toile_resto"
+                android:contentDescription="@strings/toile_resto"
                 android:layout_margin="12dp"
                 android:layout_marginLeft="0dp"
                 android:src="@drawable/ic_baseline_star_24"
@@ -82,72 +82,71 @@
         </GridLayout>
 
         <GridLayout
-            android:layout_width="match_parent"
+            android:layout_width="297dp"
             android:layout_height="100dp"
+            android:layout_gravity="center"
             android:background="#FFFFFF"
             android:columnCount="3"
-            android:rowCount="2"
-            android:paddingLeft="125dp"
-            >
+            android:rowCount="1">
 
             <ImageButton
                 android:id="@+id/call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/icone_appel"
-                android:src="@drawable/ic_baseline_call_24"
-                android:background="@color/white"
                 android:layout_gravity="center"
+                android:background="@color/white"
+                android:contentDescription="@string/icone_appel"
                 android:fontFamily="sans-serif-black"
+                android:src="@drawable/ic_baseline_call_24"
                 app:tint="@color/orange" />
 
             <ImageButton
                 android:id="@+id/fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/icone_aime"
-                android:src="@drawable/ic_baseline_star_24"
-                android:background="@color/white"
                 android:layout_gravity="center"
+                android:background="@color/white"
+                android:contentDescription="@string/icone_aime"
                 android:fontFamily="sans-serif-black"
+                android:src="@drawable/ic_baseline_star_24"
                 app:tint="@color/orange" />
 
             <ImageButton
                 android:id="@+id/website"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/icone_world"
-                android:background="@color/white"
-                android:layout_marginRight="125dp"
-                android:src="@drawable/ic_outline_public_24"
                 android:layout_gravity="center"
-                app:tint="@color/orange"
+                android:background="@color/white"
+                android:contentDescription="@string/icone_world"
                 android:fontFamily="sans-serif-black"
-                />
+                android:src="@drawable/ic_outline_public_24"
+                app:tint="@color/orange" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textColor="@color/black"
+                android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/call" />
+                android:padding="5dp"
+                android:text="@string/call"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textColor="@color/black"
+                android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/like" />
+                android:padding="5dp"
+                android:text="@string/like"
+                android:textColor="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textColor="@color/black"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/website" />
+                android:padding="5dp"
+                android:text="@string/website"
+                android:textColor="@color/black" />
 
         </GridLayout>
 

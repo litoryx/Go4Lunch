@@ -18,7 +18,12 @@ import com.example.go4lunch.liststaff.ListStaffRecyclerViewAdapter;
 import com.example.go4lunch.R;
 import com.example.go4lunch.models.Restaurant;
 import com.example.go4lunch.models.RestaurantDetailViewState;
+import com.example.go4lunch.models.User;
+import com.example.go4lunch.objetgoogle.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewRestActivity extends AppCompatActivity {
 
@@ -69,7 +74,15 @@ public class ViewRestActivity extends AppCompatActivity {
         Log.d("getPhoto",""+place.getPhoto());
         Glide.with(this).load(place.getPhoto()).into(imgRest);
 
-        listStaffRecyclerViewAdapter.submitList(place.getUserCurrentRest());
+        List<User> users = new ArrayList<>();
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+
+        listStaffRecyclerViewAdapter.submitList(users);
         listStaffRecyclerViewAdapter.notifyDataSetChanged();
 
         mButtonPresent.setOnClickListener(view -> {

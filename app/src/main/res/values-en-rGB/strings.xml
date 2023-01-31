@@ -13,6 +13,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="facebook_application_id" translatable="false" >652274723290711</string>
+    <string name="fb_login_protocol_scheme"  translatable="false">fb652274723290711</string>
+    <string name="facebook_client_token" translatable="false" >5b1518ac4a29634fc6ed358468ae019c</string>
+
     <string name="ylunch">Your Lunch</string>
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>

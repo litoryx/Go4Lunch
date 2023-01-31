@@ -39,7 +39,6 @@ import androidx.work.WorkRequest;
 
 public class ConnexionActivity2 extends AppCompatActivity {
 
-    Intent intent;
     private static final int RC_SIGN_IN = 123;
 
     @SuppressLint("MissingPermission")
@@ -68,9 +67,10 @@ public class ConnexionActivity2 extends AppCompatActivity {
 
         long time = calendar.get(Calendar.HOUR_OF_DAY);
         Log.d("interval","Intervale fait");
-        if(time <= 12){
+        if(time < 12){
             time = time - 12;
         }
+
         return time;
     }
 
